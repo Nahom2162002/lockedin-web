@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { connectDB } from '@/lib/mongodb';
 import { getUserFromRequest } from '@/lib/auth';
+import User from '@/models/User';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -30,8 +31,8 @@ export async function POST(req: NextRequest) {
                 metadata: { userId: user._id.toString() }
             });
             customerId = customer.id;
-            user.stripeCustomerId = customerId;
-            await user.save();
+            
+            await User.findByIdAndUpdate(user._id, { stripeCustomerId: customer.id });
         }
 
         const session = await stripe.checkout.sessions.create({
