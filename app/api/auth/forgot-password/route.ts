@@ -4,7 +4,15 @@ import User from '@/models/User';
 import { Resend } from 'resend';
 import crypto from 'crypto';
 
-export { OPTIONS } from '@/lib/cors';
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -15,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return NextResponse.json({ error: 'No account found with that email' }, { status: 400 });
+      return NextResponse.json({ error: 'No account found with that email' }, { status: 400, headers: corsHeaders });
     }
 
     const resetToken = crypto.randomBytes(32).toString('hex');
@@ -39,11 +47,11 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
     }
 
     return NextResponse.json({ message: 'Password reset email sent!' });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
   }
 }

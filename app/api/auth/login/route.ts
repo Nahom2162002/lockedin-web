@@ -4,7 +4,15 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-export { OPTIONS } from '@/lib/cors';
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,12 +21,12 @@ export async function POST(req: NextRequest) {
 
     const user = await User.findOne({ username });
     if (!user) {
-      return NextResponse.json({ error: 'Invalid username or password' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid username or password' }, { status: 400, headers: corsHeaders });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return NextResponse.json({ error: 'Invalid username or password' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid username or password' }, { status: 400, headers: corsHeaders });
     }
 
     const token = jwt.sign(
@@ -29,6 +37,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Login successful!', token });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
   }
 }
