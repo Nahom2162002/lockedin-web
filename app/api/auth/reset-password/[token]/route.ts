@@ -4,6 +4,8 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import { validatePassword } from '@/lib/passwordValidator';
 
+export { OPTIONS } from '@/lib/cors';
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ token: string }> }

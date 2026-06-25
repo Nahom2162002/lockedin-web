@@ -4,6 +4,8 @@ import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+export { OPTIONS } from '@/lib/cors';
+
 export async function POST(req: NextRequest) {
   try {
     await connectDB();

@@ -4,6 +4,8 @@ import User from '@/models/User';
 import { Resend } from 'resend';
 import crypto from 'crypto';
 
+export { OPTIONS } from '@/lib/cors';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {

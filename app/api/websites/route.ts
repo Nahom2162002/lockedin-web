@@ -3,6 +3,8 @@ import { connectDB } from '@/lib/mongodb';
 import { getUserFromRequest } from '@/lib/auth';
 import Website from '@/models/Website';
 
+export { OPTIONS } from '@/lib/cors';
+
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
