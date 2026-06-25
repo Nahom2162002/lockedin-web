@@ -5,7 +5,7 @@ import Website from '@/models/Website';
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -15,15 +15,16 @@ export async function PUT(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
     // Verify the website actually belongs to this user
-    const existing = await Website.findOne({ _id: params.id, userId: user._id });
+    const existing = await Website.findOne({ _id: id, userId: user._id });
     if (!existing) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
 
     const { url, dateCreated, startTime, endTime } = await req.json();
     const website = await Website.findByIdAndUpdate(
-      params.id,
+      id,
       { url, dateCreated: new Date(dateCreated), startTime, endTime },
       { new: true }
     );
@@ -36,7 +37,7 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -46,13 +47,14 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
     // Verify ownership before deleting
-    const existing = await Website.findOne({ _id: params.id, userId: user._id });
+    const existing = await Website.findOne({ _id: id, userId: user._id });
     if (!existing) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
 
-    await Website.findByIdAndDelete(params.id);
+    await Website.findByIdAndDelete(id);
     return NextResponse.json({ message: 'Website deleted!' });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
