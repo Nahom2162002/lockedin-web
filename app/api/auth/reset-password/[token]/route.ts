@@ -6,12 +6,12 @@ import { validatePassword } from '@/lib/passwordValidator';
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { token: string } }
+  { params }: { params: Promise<{ token: string }> }
 ) {
   try {
     await connectDB();
     const { password } = await req.json();
-    const { token } = params;
+    const { token } = await params;
 
     const user = await User.findOne({
       resetToken: token,
