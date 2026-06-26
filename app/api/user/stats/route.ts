@@ -37,7 +37,14 @@ export async function GET(req: NextRequest) {
 
         const siteCounts: Record<string, number> = {};
         websites.forEach(site => {
-            const domain = site.url.replace(/&https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+            let domain = site.url;
+            try {
+                const parsed = new URL(site.url.startsWith('http') ? site.url : `https://${site.url}`);
+                domain = parsed.hostname.replace(/^www\./, '');
+            } catch {
+                domain = site.url;
+            }
+            domain = domain.split('.')[0];
             siteCounts[domain] = (siteCounts[domain] || 0) + 1;
         });
         const topSites = Object.entries(siteCounts)
