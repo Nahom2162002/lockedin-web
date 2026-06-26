@@ -31,10 +31,17 @@ export async function POST(req: NextRequest) {
         }
         case 'customer.subscription.deleted': {
             const subscription = event.data.object as any;
-            await User.findOneAndUpdate(
+            console.log('subscription.deleted received');
+            console.log('customer id from stripe:', subscription.customer);
+
+            const user = await User.findOne({ stripeCustomerId: subscription.customer });
+            console.log('user found:', user);
+
+            const result = await User.findOneAndUpdate(
                 { stripeCustomerId: subscription.customer },
                 { plan: 'free' }
             );
+            console.log('update result:', result);
             break;
         }
     }
