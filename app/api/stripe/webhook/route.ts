@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     await connectDB();
 
     switch (event.type) {
-        case 'checkout.session.completed': {
+        case 'invoice.paid': {
             const session = event.data.object as any;
             await User.findOneAndUpdate(
                 { stripeCustomerId: session.customer },
