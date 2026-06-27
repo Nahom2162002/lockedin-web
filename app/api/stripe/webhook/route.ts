@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
+import mongoose from 'mongoose';
 
 export async function POST(req: NextRequest) {
     const body = await req.text();
@@ -23,24 +24,28 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        await connectDB();
+        if (mongoose.connection.readyState !== 1) {
+            await mongoose.connect(process.env.MONGODB_URI!);
+        }
 
         if (event.type === 'invoice.paid') {
             const invoice = event.data.object as any;
-            await User.findOneAndUpdate(
+             const updated = await User.findOneAndUpdate(
                 { stripeCustomerId: invoice.customer },
-                { plan: 'pro' },
+                { $set: { plan: 'pro' } },
                 { new: true }
             );
+            console.log('invoice.paid updated user:', updated?.username, 'plan:', updated?.plan);
         }
 
         if (event.type === 'customer.subscription.deleted') {
             const subscription = event.data.object as any;
-            await User.findOneAndUpdate(
+            const updated = await User.findOneAndUpdate(
                 { stripeCustomerId: subscription.customer },
-                { plan: 'free' },
+                { $set: { plan: 'free' } },
                 { new: true }
             );
+            console.log('subscription.deleted updated user:', updated?.username, 'plan:', updated?.plan);
         }
     } catch (err: any) {
         console.log('Database error:', err.message);
