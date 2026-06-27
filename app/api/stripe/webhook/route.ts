@@ -4,16 +4,10 @@ import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 
 export async function POST(req: NextRequest) {
-    console.log('Webhook endpoint hit');
-
     const body = await req.text();
     const sig = req.headers.get('stripe-signature')!;
 
-    console.log('Stripe signature present:', !!sig);
-    console.log('Webhook secret present:', !!process.env.STRIPE_WEBHOOK_SECRET);
-
     if (!sig) {
-        console.log('No signature found');
         return NextResponse.json({ error: 'No signature' }, { status: 400 });
     }
 
@@ -24,43 +18,33 @@ export async function POST(req: NextRequest) {
             sig,
             process.env.STRIPE_WEBHOOK_SECRET!
         );
-        console.log('Event constructed successfully:', event.type);
     } catch (err: any) {
-        console.log('Webhook verification failed:', err.message);
         return NextResponse.json({ error: `Webhook error: ${err.message}` }, { status: 400 });
     }
 
-    await connectDB();
+    try {
+        await connectDB();
 
-    switch (event.type) {
-        case 'invoice.paid': {
+        if (event.type === 'invoice.paid') {
             const invoice = event.data.object as any;
-            console.log('invoice.paid - customer:', invoice.customer);
-
-            const allUsers = await User.find({}, { username: 1, stripeCustomerId: 1, plan: 1 });
-            console.log('all users:', JSON.stringify(allUsers));
-            
-            const result = await User.findOneAndUpdate(
+            await User.findOneAndUpdate(
                 { stripeCustomerId: invoice.customer },
-                { plan: 'pro' }
+                { plan: 'pro' },
+                { new: true }
             );
-            console.log('invoice.paid update result:', result);
-            break;
         }
-        case 'customer.subscription.deleted': {
+
+        if (event.type === 'customer.subscription.deleted') {
             const subscription = event.data.object as any;
-            console.log('subscription.deleted - customer:', subscription.customer);
-
-            const user = await User.findOne({ stripeCustomerId: subscription.customer });
-            console.log('user found:', user);
-
-            const result = await User.findOneAndUpdate(
+            await User.findOneAndUpdate(
                 { stripeCustomerId: subscription.customer },
-                { plan: 'free' }
+                { plan: 'free' },
+                { new: true }
             );
-            console.log('subscription.deleted update result:', result);
-            break;
         }
+    } catch (err: any) {
+        console.log('Database error:', err.message);
+        return NextResponse.json({ error: err.message }, { status: 500 });
     }
 
     return NextResponse.json({ received: true });
