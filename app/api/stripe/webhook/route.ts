@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
              const updated = await User.findOneAndUpdate(
                 { stripeCustomerId: invoice.customer },
                 { $set: { plan: 'pro' } },
-                { new: true }
+                { returnDocument: 'after' }
             );
             console.log('invoice.paid updated user:', updated?.username, 'plan:', updated?.plan);
         }
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
             const updated = await User.findOneAndUpdate(
                 { stripeCustomerId: subscription.customer },
                 { $set: { plan: 'free' } },
-                { new: true }
+                { returnDocument: 'after' }
             );
             console.log('subscription.deleted updated user:', updated?.username, 'plan:', updated?.plan);
         }
