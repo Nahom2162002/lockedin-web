@@ -36,6 +36,10 @@ export async function POST(req: NextRequest) {
         case 'invoice.paid': {
             const invoice = event.data.object as any;
             console.log('invoice.paid - customer:', invoice.customer);
+
+            const allUsers = await User.find({}, { username: 1, stripeCustomerId: 1, plan: 1 });
+            console.log('all users:', JSON.stringify(allUsers));
+            
             const result = await User.findOneAndUpdate(
                 { stripeCustomerId: invoice.customer },
                 { plan: 'pro' }
