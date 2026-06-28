@@ -7,6 +7,10 @@ const corsHeaders = {
 };
 
 export function middleware(request: NextRequest) {
+    if (request.nextUrl.pathname === '/api/stripe/webhook') {
+        return NextResponse.next();
+    }
+
     if (request.method === 'OPTIONS') {
         return new NextResponse(null, { status: 204, headers: corsHeaders });
     }
@@ -20,5 +24,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: '/api/((?!stripe/webhook).)*'
+    matcher: '/api/:path*'
 };
