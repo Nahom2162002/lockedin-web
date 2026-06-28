@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import { getUserFromRequest } from '@/lib/auth';
 import Website from '@/models/Website';
-import { url } from 'inspector';
+import BlockEvent from '@/models/BlockEvent';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -28,30 +28,58 @@ export async function GET(req: NextRequest) {
 
         const websites = await Website.find({ userId: user._id });
 
-        const totalFocusMinutes = websites.reduce((total, site) => {
+        const getDomain = (url: string) => {
+            try {
+                const parsed = new URL(url.startsWith('http') ? url : `https://${url}`);
+                return parsed.hostname.replace(/^www\./, '').split('.')[0];
+            } catch {
+                return url;
+            }
+        };
+
+        const getSiteMinutes = (site: any) => {
             const [startH, startM] = site.startTime.split(':').map(Number);
             const [endH, endM] = site.endTime.split(':').map(Number);
             const duration = (endH * 60 + endM) - (startH * 60 + startM);
-            return total + (duration > 0 ? duration: 0);
-        }, 0);
+            return duration > 0 ? duration : 0;
+        };
+
+        const totalFocusMinutes = websites.reduce((total, site) => total + getSiteMinutes(site), 0);
 
         const siteCounts: Record<string, number> = {};
         websites.forEach(site => {
-            let domain = site.url;
-            try {
-                const parsed = new URL(site.url.startsWith('http') ? site.url : `https://${site.url}`);
-                domain = parsed.hostname.replace(/^www\./, '');
-            } catch {
-                domain = site.url;
-            }
-            domain = domain.split('.')[0];
+            const domain = getDomain(site.url);
             siteCounts[domain] = (siteCounts[domain] || 0) + 1;
         });
         const topSites = Object.entries(siteCounts)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 5)
-          .map(([url, count]) => ({ url, count }));
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([url, count]) => ({ url, count }));
         
+        const dailyMinutes: Record<string, number> = {};
+        websites.forEach(site => {
+            const date = site.dateCreated.toISOString().split('T')[0];
+            dailyMinutes[date] = (dailyMinutes[date] || 0) + getSiteMinutes(site);
+        });
+
+        const last7Days = Array.from({ length: 7 }, (_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - (6 - i));
+            const dateStr = d.toISOString().split('T')[0];
+            const label = d.toLocaleDateString('en-US', { weekday: 'short' });
+            return {
+                date: label,
+                minutes: Math.round(dailyMinutes[dateStr] || 0)
+            };
+        });
+
+        const activeDays = Object.values(dailyMinutes);
+        const avgDailyMinutes = activeDays.length > 0
+            ? Math.round(activeDays.reduce((a, b) => a + b, 0) / activeDays.length)
+            : 0;
+        
+        const bestDayMinutes = activeDays.length > 0 ? Math.max(...activeDays) : 0;
+
         const dates = [...new Set(websites.map(site => site.dateCreated.toISOString().split('T')[0]))].sort();
         let streak = 0;
         let currentStreak = 0;
@@ -64,7 +92,6 @@ export async function GET(req: NextRequest) {
                 const prev = new Date(dates[i - 1]);
                 const curr = new Date(dates[i]);
                 const diff = (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24);
-
                 if (diff === 1) {
                     currentStreak++;
                 } else {
@@ -78,16 +105,24 @@ export async function GET(req: NextRequest) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         const yesterdayStr = yesterday.toISOString().split('T')[0];
+        if (lastDate !== today && lastDate !== yesterdayStr) streak = 0;
 
-        if (lastDate !== today && lastDate !== yesterdayStr) {
-            streak = 0;
-        }
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const blockEventsToday = await BlockEvent.countDocuments({
+            userId: user._id,
+            blockedAt: { $gte: todayStart }
+        });
 
         return NextResponse.json({
             totalFocusMinutes,
             topSites,
             streak,
-            totalSessions: websites.length 
+            totalSessions: websites.length,
+            last7Days,
+            avgDailyMinutes,
+            bestDayMinutes,
+            blockEventsToday
         }, { headers: corsHeaders });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
