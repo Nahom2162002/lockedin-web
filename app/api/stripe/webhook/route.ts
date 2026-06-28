@@ -5,7 +5,11 @@ import User from '@/models/User';
 import mongoose from 'mongoose';
 
 export async function POST(req: NextRequest) {
+    console.log('WEBHOOK HIT - method:', req.method, 'time:', new Date().toISOString());
+
     const body = await req.text();
+    console.log('Event type from body:', JSON.parse(body).type);
+    
     const sig = req.headers.get('stripe-signature')!;
 
     if (!sig) {
