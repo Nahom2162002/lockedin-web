@@ -50,15 +50,19 @@ export async function POST(req: NextRequest) {
             console.log('invoice.paid - updated:', updated?.username, 'plan:', updated?.plan);
         }
 
-        if (event.type === 'customer.subscription.deleted') {
+        if (event.type === 'customer.subscription.updated') {
             const subscription = event.data.object as any;
-            console.log('subscription.deleted - customer:', subscription.customer);
-            const updated = await User.findOneAndUpdate(
-                { stripeCustomerId: subscription.customer },
-                { $set: { plan: 'free' } },
-                { returnDocument: 'after' }
-            );
-            console.log('subscription.deleted - updated:', updated?.username, 'plan:', updated?.plan);
+            console.log('subscription.updated - status:', subscription.status);
+            console.log('subscription.updated - customer:', subscription.customer);
+
+            if (subscription.status === 'canceled') {
+                const updated = await User.findOneAndUpdate(
+                    { stripeCustomerId: subscription.customer },
+                    { $set: { plan: 'free' } },
+                    { returnDocument: 'after' }
+                );
+                console.log('Plan set to free for:', updated?.username);
+            }
         }
     } catch (err: any) {
         console.log('Database error:', err.message);
