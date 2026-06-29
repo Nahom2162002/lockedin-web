@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     const parsedDate = dateCreated ? new Date(dateCreated) : null;
 
     const website = new Website({
-      userId: user._id,   // use verified user._id, not whatever was sent in the body
+      userId: user._id,   
       url,
       dateCreated: parsedDate,
       startTime,
