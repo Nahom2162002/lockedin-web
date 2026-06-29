@@ -21,7 +21,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         if (user.plan !== 'pro') return NextResponse.json({ error: 'Pro plan required' }, { status: 403, headers: corsHeaders });
 
         const { id } = await params;
-        const existing = await RecurringBlock.findOne({ _id: id, userid: user._id });
+        const existing = await RecurringBlock.findOne({ _id: id, userId: user._id });
         if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404, headers: corsHeaders });
 
         const body = await req.json();
