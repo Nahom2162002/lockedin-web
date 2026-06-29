@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
     }
 
-    const { url, dateCreated, startTime, endTime } = await req.json();
+    const { url, dateCreated, startTime, endTime, strictMode } = await req.json();
     const parsedDate = dateCreated ? new Date(dateCreated) : null;
 
     const website = new Website({
@@ -47,7 +47,8 @@ export async function POST(req: NextRequest) {
       url,
       dateCreated: parsedDate,
       startTime,
-      endTime
+      endTime,
+      strictMode: strictMode ?? null 
     });
     await website.save();
 
