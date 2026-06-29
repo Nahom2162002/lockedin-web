@@ -32,11 +32,11 @@ export async function PUT(
       return NextResponse.json({ error: 'Not found' }, { status: 404, headers: corsHeaders });
     }
 
-    const { url, dateCreated, startTime, endTime } = await req.json();
+    const { url, dateCreated, startTime, endTime, strictMode } = await req.json();
     const website = await Website.findByIdAndUpdate(
       id,
-      { url, dateCreated: new Date(dateCreated), startTime, endTime },
-      { new: true }
+      { url, dateCreated: new Date(dateCreated), startTime, endTime, strictMode: strictMode ?? null },
+      { returnDocument: 'after' }
     );
 
     return NextResponse.json(website);
