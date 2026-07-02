@@ -171,8 +171,8 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'radial-gradient(circle at 50% 50%, #1a1a2e, #0d0d0d)',
     padding: '40px 24px 60px',
     fontFamily: 'Inter, sans-serif',
-    width: '100%',
-    boxSizing: 'border-box' as const 
+    maxWidth: 800,
+    margin: '0 auto' 
   },
   centered: {
     display: 'flex',
@@ -196,19 +196,21 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: 6
   },
   cardRow: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
+    display: 'flex',
     gap: 12,
+    justifyContent: 'center',
     marginBottom: 32,
-    maxWidth: 700,
-    margin: '0 auto 32px auto'
+    flexWrap: 'wrap'
   },
   card: {
     background: 'rgba(255, 255, 255, 0.05)',
     border: '1px solid rgba(255, 255, 255, 0.08)',
     borderRadius: 16,
     padding: '20px 24px',
-    textAlign: 'center' as const,
+    textAlign: 'center',
+    minWidth: 130,
+    flex: '1 1 130px',
+    maxWidth: 160
   },
   cardLabel: {
     color: 'rgba(255, 255, 255, 0.45)',
