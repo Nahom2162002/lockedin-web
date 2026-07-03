@@ -39,6 +39,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
     }
 
+    if (user.plan === 'free') {
+      const count = await Website.countDocuments({ userId: user._id });
+      if (count >= 3) {
+        return NextResponse.json({
+          error: 'Free accounts are limited to 3 blocked websites. Upgrade to Pro for unlimited blocking.',
+          limitReached: true 
+        }, { status: 403, headers: corsHeaders });
+      }
+    }
+
     const { url, dateCreated, startTime, endTime, strictMode } = await req.json();
     const parsedDate = dateCreated ? new Date(dateCreated) : null;
 
