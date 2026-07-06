@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
         if (user.plan !== 'pro') return NextResponse.json({ error: 'Pro plan required' }, { status: 403, headers: corsHeaders });
 
-        const { urls, startTime, endTime, scheduleType, dateCreated, days } = await req.json();
+        const { urls, startTime, endTime, scheduleType, dateCreated, days, strictMode } = await req.json();
 
         if (!urls || !startTime || !endTime || !scheduleType) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers: corsHeaders });
@@ -37,7 +37,8 @@ export async function POST(req: NextRequest) {
                 url,
                 dateCreated: new Date(dateCreated),
                 startTime,
-                endTime 
+                endTime,
+                strictMode: strictMode ?? null
             }));
 
             await Website.insertMany(blocks);
@@ -55,7 +56,8 @@ export async function POST(req: NextRequest) {
                 startTime,
                 endTime,
                 days,
-                active: true 
+                active: true,
+                strictMode: strictMode ?? null
             }));
 
             await RecurringBlock.insertMany(blocks);

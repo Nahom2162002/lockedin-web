@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
         if (user.plan !== 'pro') return NextResponse.json({ error: 'Pro plan required' }, { status: 403, headers: corsHeaders });
 
-        const { url, startTime, endTime, days } = await req.json();
+        const { url, startTime, endTime, days, strictMode } = await req.json();
 
         if (!url || !startTime || !endTime || !days || days.length === 0) {
             return NextResponse.json({ error: 'Please fill in all fields' }, { status: 400, headers: corsHeaders });
@@ -50,7 +50,8 @@ export async function POST(req: NextRequest) {
             startTime,
             endTime,
             days,
-            active: true
+            active: true,
+            strictMode: strictMode ?? null
         });
         await block.save();
 
