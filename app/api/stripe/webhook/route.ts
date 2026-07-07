@@ -49,9 +49,14 @@ export async function POST(req: NextRequest) {
 
         if (event.type === 'customer.subscription.updated') {
             const subscription = event.data.object as any;
-            console.log('subscription.updated - customer:', subscription.customer);
-            console.log('cancel_at_period_end:', subscription.cancel_at_period_end);
-            console.log('status:', subscription.status);
+            console.log('FULL SUBSCRIPTION OBJECT:', JSON.stringify({
+                id: subscription.id,
+                status: subscription.status,
+                cancel_at_period_end: subscription.cancel_at_period_end,
+                cancel_at: subscription.cancel_at,
+                canceled_at: subscription.canceled_at,
+                current_period_end: subscription.current_period_end 
+            }));
 
             if (subscription.cancel_at_period_end === true) {
                 const updated = await User.findOneAndUpdate(
@@ -80,7 +85,6 @@ export async function POST(req: NextRequest) {
                 { returnDocument: 'after' }
             );
             console.log('Plan set to free for:', updated?.username);
-            console.log('');
         }
     } catch (err: any) {
         console.log('Database error:', err.message);
