@@ -54,7 +54,8 @@ export async function GET(req: NextRequest) {
         }
 
         const cancelAtPeriodEnd = sub.cancel_at_period_end;
-        const currentPeriodEnd = sub.current_period_end ? new Date(sub.current_period_end * 1000).toISOString() : null;
+        const periodEnd = sub.items?.current_period_end || sub.current_period_end || sub.cancel_at;
+        const currentPeriodEnd = periodEnd ? new Date(periodEnd * 1000).toISOString() : null;
 
         // Sync to database if out of sync
         if (cancelAtPeriodEnd !== user.cancelAtPeriodEnd) {
