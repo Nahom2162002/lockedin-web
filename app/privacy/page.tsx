@@ -2,16 +2,23 @@ export default function PrivacyPolicy() {
   return (
     <main style={{
       fontFamily: 'Inter, sans-serif',
-      background: '#0d0d0d',
+      background: `
+        radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0, 170, 255, 0.14), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 85% 105%, rgba(0, 120, 255, 0.12), transparent 60%),
+        linear-gradient(180deg, #050726 0%, #000004 100%)`,
       minHeight: '100vh',
       color: 'white',
       padding: '60px 24px'
     }}>
+      <style>{`
+        .back-link { transition: color 0.15s ease; }
+        .back-link:hover { color: rgba(120, 210, 255, 1) !important; }
+      `}</style>
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
-        <a href="/" style={{ color: '#0099ff', fontSize: 14, textDecoration: 'none' }}>← Back to LockedIn</a>
+        <a href="/" className="back-link" style={{ color: 'rgb(0, 170, 255)', fontSize: 14, textDecoration: 'none' }}>← Back to LockedIn</a>
 
-        <h1 style={{ fontSize: 36, fontWeight: 700, margin: '32px 0 8px' }}>Privacy Policy</h1>
-        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14, marginBottom: 48 }}>
+        <h1 style={{ fontSize: 36, fontWeight: 700, margin: '32px 0 8px', textShadow: '0 0 12px rgba(0, 170, 255, 0.4)' }}>Privacy Policy</h1>
+        <p style={{ color: 'rgba(180, 225, 255, 0.45)', fontSize: 14, marginBottom: 48 }}>
           Last updated: July 5, 2026
         </p>
 
@@ -90,11 +97,11 @@ To exercise any of these rights, contact us at nahomashagrea2002@gmail.com.`
             content: 'If you have any questions about this privacy policy, contact us at nahomashagrea2002@gmail.com.'
           }
         ].map((section, i) => (
-          <div key={i} style={{ marginBottom: 40 }}>
+          <div key={i} style={{ marginBottom: 40, paddingBottom: 32, borderBottom: '1px solid rgba(0, 170, 255, 0.15)' }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12, color: 'white' }}>
               {section.title}
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, lineHeight: 1.8, whiteSpace: 'pre-line', margin: 0 }}>
+            <p style={{ color: 'rgba(200, 225, 255, 0.65)', fontSize: 15, lineHeight: 1.8, whiteSpace: 'pre-line', margin: 0 }}>
               {section.content}
             </p>
           </div>
