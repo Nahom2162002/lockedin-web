@@ -14,11 +14,10 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: NextRequest) {
-    const user = await getUserFromRequest(req);
     try {
         await connectDB();
 
-        //const user = await getUserFromRequest(req);
+        const user = await getUserFromRequest(req);
 
         if (!user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
@@ -35,9 +34,6 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ url: session.url }, { headers: corsHeaders });
     } catch (err: any) {
-        console.log('Portal error:', err.message);
-        console.log('Portal error type:', err.type);
-        console.log('Customer ID:', user?.stripeCustomerId);
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
     }
 }
