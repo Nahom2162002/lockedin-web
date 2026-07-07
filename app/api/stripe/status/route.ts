@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
             }, { headers: corsHeaders });
         }
 
-        const cancelAtPeriodEnd = sub.cancel_at_period_end;
+        const cancelAtPeriodEnd = sub.cancel_at_period_end || (sub.cancel_at !== null && sub.cancel_at !== undefined);
         const periodEnd = sub.items?.current_period_end || sub.current_period_end || sub.cancel_at;
         const currentPeriodEnd = periodEnd ? new Date(periodEnd * 1000).toISOString() : null;
 
