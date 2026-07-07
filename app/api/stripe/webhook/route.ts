@@ -49,23 +49,21 @@ export async function POST(req: NextRequest) {
 
         if (event.type === 'customer.subscription.updated') {
             const subscription = event.data.object as any;
-            console.log('FULL SUBSCRIPTION OBJECT:', JSON.stringify({
-                id: subscription.id,
-                status: subscription.status,
-                cancel_at_period_end: subscription.cancel_at_period_end,
-                cancel_at: subscription.cancel_at,
-                canceled_at: subscription.canceled_at,
-                current_period_end: subscription.current_period_end 
-            }));
+            console.log('subscription.updated - status:', subscription.status);
+            console.log('subscription.updated - customer:', subscription.customer);
 
-            if (subscription.cancel_at_period_end === true) {
+            const latestSub = await stripe.subscriptions.retrieve(subscription.id);
+            console.log('latest cancel_at_period_end:', latestSub.cancel_at_period_end);
+            console.log('latest status:', latestSub.status);
+
+            if (latestSub.cancel_at_period_end === true) {
                 const updated = await User.findOneAndUpdate(
                     { stripeCustomerId: subscription.customer },
                     { $set: { cancelAtPeriodEnd: true } },
                     { returnDocument: 'after' }
                 );
                 console.log('Cancellation scheduled for:', updated?.username, 'cancelAtPeriodEnd:', updated?.cancelAtPeriodEnd);
-            } else {
+            } else if (latestSub.status === 'active' && !latestSub.cancel_at_period_end) {
                 const updated = await User.findOneAndUpdate(
                     { stripeCustomerId: subscription.customer },
                     { $set: { plan: 'pro', cancelAtPeriodEnd: false }},
