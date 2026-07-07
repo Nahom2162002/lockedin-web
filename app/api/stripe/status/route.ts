@@ -35,6 +35,15 @@ export async function GET(req: NextRequest) {
         });
 
         const sub = subscriptions.data[0] as any;
+        console.log('Subscription keys:', Object.keys(sub));
+        console.log('Raw sub:', JSON.stringify({
+            status: sub.status,
+            current_period_end: sub.current_period_end,
+            cancel_at_period_end: sub.cancel_at_period_end,
+            cancel_at: sub.cancel_at,
+            ended_at: sub.ended_at,
+            items: sub.items?.data?.[0]
+        }));
 
         if (!sub || sub.status === 'canceled') {
             return NextResponse.json({
