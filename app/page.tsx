@@ -13,6 +13,7 @@ export default function LandingPage() {
       minHeight: '100vh',
       color: 'white'
     }}>
+      <meta name="google-site-verification" content="qk59OfCH8Pf83lOGIj4_3dnBprK3wZdcE7ulhViQOZY" />
       <style>{`
         .nav-link { transition: color 0.15s ease; }
         .nav-link:hover { color: rgb(0, 170, 255) !important; }
