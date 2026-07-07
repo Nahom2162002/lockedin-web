@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
-import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 import mongoose from 'mongoose';
 
@@ -8,13 +7,10 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-    console.log('WEBHOOK HIT - method:', req.method, 'time:', new Date().toISOString());
+    console.log('WEBHOOK HIT - time:', new Date().toISOString());
 
     const body = await req.text();    
     const sig = req.headers.get('stripe-signature');
-
-    console.log('Signature present:', !!sig);
-    console.log('Webhook secret present:', !!process.env.STRIPE_WEBHOOK_SECRET);
 
     if (!sig) {
         console.log('No signature - returning 400');
@@ -42,12 +38,13 @@ export async function POST(req: NextRequest) {
         if (event.type === 'invoice.paid') {
             const invoice = event.data.object as any;
             console.log('invoice.paid - customer:', invoice.customer);
+
             const updated = await User.findOneAndUpdate(
                 { stripeCustomerId: invoice.customer },
-                { $set: { plan: 'pro' } },
+                { $set: { plan: 'pro', cancelAtPeriodEnd: false } },
                 { returnDocument: 'after' }
             );
-            console.log('invoice.paid - updated:', updated?.username, 'plan:', updated?.plan);
+            console.log('invoice.paid - updated:', updated?.username, updated?.plan);
         }
 
         if (event.type === 'customer.subscription.updated') {
@@ -55,14 +52,32 @@ export async function POST(req: NextRequest) {
             console.log('subscription.updated - status:', subscription.status);
             console.log('subscription.updated - customer:', subscription.customer);
 
-            if (subscription.status === 'canceled') {
+            if (subscription.cancel_at_period_end) {
                 const updated = await User.findOneAndUpdate(
                     { stripeCustomerId: subscription.customer },
-                    { $set: { plan: 'free' } },
+                    { $set: { cancelAtPeriodEnd: true } },
                     { returnDocument: 'after' }
                 );
                 console.log('Plan set to free for:', updated?.username);
+            } else {
+                const updated = await User.findOneAndUpdate(
+                    { stripeCustomerId: subscription.customer },
+                    { $set: { plan: 'pro', cancelAtPeriodEnd: false }},
+                    { returnDocument: 'after' }
+                );
             }
+        }
+
+        if (event.type === 'customer.subscription.deleted') {
+            const subscription = event.data.object as any;
+            console.log('subscription.deleted - customer:', subscription.customer);
+
+            const updated = await User.findOneAndUpdate(
+                { stripeCustomerId: subscription.customer },
+                { $set: { plan: 'free', cancelAtPeriodEnd: false }},
+                { returnDocument: 'after' }
+            );
+            console.log('Plan set to free for:', updated?.username);
         }
     } catch (err: any) {
         console.log('Database error:', err.message);

@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
         }
 
-        return NextResponse.json({ plan: user.plan }, { headers: corsHeaders });
+        return NextResponse.json({ plan: user.plan, cancelAtPeriodEnd: user.cancelAtPeriodEnd ?? false }, { headers: corsHeaders });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
     }

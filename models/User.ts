@@ -10,6 +10,7 @@ const userSchema = new Schema({
   createdAt:       { type: Date, default: Date.now },
   plan: { type: String, enum: ['free', 'pro'], default: 'free' },
   stripeCustomerId: { type: String },
+  cancelAtPeriodEnd: { type: Boolean, default: false },
   strictMode: { type: Boolean, default: false }
 });
 
