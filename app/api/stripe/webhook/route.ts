@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
                 { returnDocument: 'after' }
             );
             console.log('Plan set to free for:', updated?.username);
+            console.log('');
         }
     } catch (err: any) {
         console.log('Database error:', err.message);
