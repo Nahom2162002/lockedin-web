@@ -49,22 +49,24 @@ export async function POST(req: NextRequest) {
 
         if (event.type === 'customer.subscription.updated') {
             const subscription = event.data.object as any;
-            console.log('subscription.updated - status:', subscription.status);
             console.log('subscription.updated - customer:', subscription.customer);
+            console.log('cancel_at_period_end:', subscription.cancel_at_period_end);
+            console.log('status:', subscription.status);
 
-            if (subscription.cancel_at_period_end) {
+            if (subscription.cancel_at_period_end === true) {
                 const updated = await User.findOneAndUpdate(
                     { stripeCustomerId: subscription.customer },
                     { $set: { cancelAtPeriodEnd: true } },
                     { returnDocument: 'after' }
                 );
-                console.log('Plan set to free for:', updated?.username);
+                console.log('Cancellation scheduled for:', updated?.username, 'cancelAtPeriodEnd:', updated?.cancelAtPeriodEnd);
             } else {
                 const updated = await User.findOneAndUpdate(
                     { stripeCustomerId: subscription.customer },
                     { $set: { plan: 'pro', cancelAtPeriodEnd: false }},
                     { returnDocument: 'after' }
                 );
+                console.log('Subscription reactivated for:', updated?.username);
             }
         }
 
