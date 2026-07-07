@@ -32,13 +32,14 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div style={{
-        background: '#1a1a2e',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
+        background: 'rgba(5, 5, 53, 0.95)',
+        border: '1px solid rgba(0, 170, 255, 0.4)',
         borderRadius: 8,
-        padding: '8px 12px'
+        padding: '8px 12px',
+        boxShadow: '0 0 12px 2px rgba(0, 170, 255, 0.3)'
       }}>
         <p style={{ color: 'white', margin: 0, fontWeight: 600 }}>{label}</p>
-        <p style={{ color: '#0099ff', margin: 0}}>{formatMinutes(payload[0].value)}</p>
+        <p style={{ color: 'rgb(0, 170, 255)', margin: 0}}>{formatMinutes(payload[0].value)}</p>
       </div>
     );
   }
@@ -73,13 +74,15 @@ export default function DashboardPage() {
   if (loading) return (
     <div style={{ ...styles.container, ...styles.centered }}>
       <div style={styles.spinner} />
-      <p style={{ color: 'rgba(255, 255, 255, 0.5)', marginTop: 16 }}>Loading your stats...</p>
+      <p style={{ color: 'rgba(150, 210, 255, 0.6)', marginTop: 16 }}>Loading your stats...</p>
     </div>
   );
 
   if (error) return (
-    <div style={styles.container}>
-      <p style={{ color: '#ff4d4d' }}>{error}</p>
+    <div style={{ ...styles.container, ...styles.centered }}>
+      <div style={styles.card}>
+        <p style={{ color: '#ff4d4d', margin: 0 }}>{error}</p>
+      </div>
     </div>
   );
 
@@ -90,33 +93,33 @@ export default function DashboardPage() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>LockedIn</h1>
+        <h1 style={styles.title}>🔒 LockedIn</h1>
         <p style={styles.subtitle}>Your focus dashboard</p>
       </div>
 
       <div style={styles.cardRow}>
-        <div style={styles.card}>
+        <div className="stat-card" style={styles.card}>
           <p style={styles.cardLabel}>Total Focus Time</p>
           <p style={styles.cardValue}>{formatMinutes(stats.totalFocusMinutes)}</p>
         </div>
-        <div style={styles.card}>
+        <div className="stat-card" style={styles.card}>
           <p style={styles.cardLabel}>Current Streak</p>
-          <p style={{ ...styles.cardValue, color: streakColor(stats.streak)}}>{stats.streak} 🔥 days</p>
+          <p style={{ ...styles.cardValue, color: streakColor(stats.streak)}}>{stats.streak} 🔥</p>
           <p style={styles.cardSub}>{stats.streak === 1 ? 'day' : 'days'}</p>
         </div>
-        <div style={styles.card}>
+        <div className="stat-card" style={styles.card}>
           <p style={styles.cardLabel}>Total Sessions</p>
           <p style={styles.cardValue}>{stats.totalSessions}</p>
         </div>
-        <div style={styles.card}>
+        <div className="stat-card" style={styles.card}>
           <p style={styles.cardLabel}>Avg Daily Focus</p>
           <p style={styles.cardValue}>{formatMinutes(stats.avgDailyMinutes)}</p>
         </div>
-        <div style={styles.card}>
+        <div className="stat-card" style={styles.card}>
           <p style={styles.cardLabel}>Best Day</p>
           <p style={styles.cardValue}>{formatMinutes(stats.bestDayMinutes)}</p>
         </div>
-        <div style={styles.card}>
+        <div className="stat-card" style={styles.card}>
           <p style={styles.cardLabel}>Blocked Today</p>
           <p style={styles.cardValue}>{stats.blockEventsToday}</p>
           <p style={styles.cardSub}>attempts</p>
@@ -125,7 +128,7 @@ export default function DashboardPage() {
 
       {!hasData ? (
         <div style={styles.emptyState}>
-          <p style={{ fontSize: 48 }}>🎯</p>
+          <p style={{ fontSize: 48, margin: 0 }}>🎯</p>
           <p style={styles.emptyTitle}>No sessions yet</p>
           <p style={styles.emptyText}>Add websites to block in the extension and your stats will appear here.</p>
         </div>
@@ -138,21 +141,21 @@ export default function DashboardPage() {
             ) : (
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={stats.topSites} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-                  <XAxis dataKey="url" tick={{ fill: 'rgba(255, 255, 255, 0.7)', fontSize: 12 }}/>
-                  <YAxis tick={{ fill: 'rgba(255, 255, 255, 0.7)', fontSize: 12 }} allowDecimals={false}/>
+                  <XAxis dataKey="url" tick={{ fill: 'rgba(180, 225, 255, 0.75)', fontSize: 12 }}/>
+                  <YAxis tick={{ fill: 'rgba(180, 225, 255, 0.75)', fontSize: 12 }} allowDecimals={false}/>
                   <Tooltip
-                    contentStyle={{ background: '#1a1a2e', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 8 }}
+                    contentStyle={{ background: 'rgba(5, 5, 53, 0.95)', border: '1px solid rgba(0, 170, 255, 0.4)', borderRadius: 8, boxShadow: '0 0 12px 2px rgba(0, 170, 255, 0.3)' }}
                     labelStyle={{ color: 'white' }}
-                    itemStyle={{ color: '#0099ff' }}
+                    itemStyle={{ color: 'rgb(0, 170, 255)' }}
                   />
-                  <Bar 
-                    dataKey="count" 
-                    radius={[6, 6, 0, 0]} 
-                    fill="#0099ff"
+                  <Bar
+                    dataKey="count"
+                    radius={[6, 6, 0, 0]}
+                    fill="rgb(0, 170, 255)"
                     shape={(props: any) => {
                       const { x, y, width, height, index } = props;
                       const opacity = index === 0 ? 1 : 0.8 - index * 0.15;
-                      return <rect x={x} y={y} width={width} height={height} fill={`rgba(0, 153, 255, ${opacity})`} rx={6} ry={6} />;
+                      return <rect x={x} y={y} width={width} height={height} fill={`rgba(0, 170, 255, ${opacity})`} rx={6} ry={6} />;
                     }}
                   />
                 </BarChart>
@@ -161,6 +164,17 @@ export default function DashboardPage() {
           </div>
         </>
       )}
+
+      <style jsx>{`
+        .stat-card {
+          transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .stat-card:hover {
+          transform: translateY(-2px);
+          border-color: rgba(0, 170, 255, 0.55);
+          box-shadow: 0 0 18px 2px rgba(0, 170, 255, 0.25);
+        }
+      `}</style>
     </div>
   );
 }
@@ -168,11 +182,14 @@ export default function DashboardPage() {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    background: 'radial-gradient(circle at 50% 50%, #1a1a2e, #0d0d0d)',
+    background: `
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0, 170, 255, 0.14), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 85% 105%, rgba(0, 120, 255, 0.12), transparent 60%),
+      linear-gradient(180deg, #050726 0%, #000004 100%)`,
     padding: '40px 24px 60px',
     fontFamily: 'Inter, sans-serif',
     maxWidth: 800,
-    margin: '0 auto' 
+    margin: '0 auto'
   },
   centered: {
     display: 'flex',
@@ -188,10 +205,11 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'white',
     fontSize: 32,
     fontWeight: 700,
-    margin: 0
+    margin: 0,
+    textShadow: '0 0 12px rgba(0, 170, 255, 0.55)'
   },
   subtitle: {
-    color: 'rgba(255, 255, 255, 0.4)',
+    color: 'rgba(150, 210, 255, 0.55)',
     fontSize: 14,
     marginTop: 6
   },
@@ -203,17 +221,18 @@ const styles: Record<string, React.CSSProperties> = {
     flexWrap: 'wrap'
   },
   card: {
-    background: 'rgba(255, 255, 255, 0.05)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
+    background: 'rgba(0, 170, 255, 0.06)',
+    border: '1px solid rgba(0, 170, 255, 0.25)',
     borderRadius: 16,
     padding: '20px 24px',
     textAlign: 'center',
     minWidth: 130,
     flex: '1 1 130px',
-    maxWidth: 160
+    maxWidth: 160,
+    boxShadow: '0 0 10px 1px rgba(0, 170, 255, 0.12)'
   },
   cardLabel: {
-    color: 'rgba(255, 255, 255, 0.45)',
+    color: 'rgba(180, 225, 255, 0.55)',
     fontSize: 11,
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
@@ -227,29 +246,35 @@ const styles: Record<string, React.CSSProperties> = {
     margin: 0
   },
   cardSub: {
-    color: 'rgba(255, 255, 255, 0.3)',
+    color: 'rgba(180, 225, 255, 0.4)',
     fontSize: 11,
     marginTop: 2,
     margin: '2px 0 0 0'
   },
   chartContainer: {
-    background: 'rgba(255, 255, 255, 0.04)',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
+    background: 'rgba(5, 5, 53, 0.55)',
+    border: '1px solid rgba(0, 170, 255, 0.35)',
     borderRadius: 16,
     padding: '24px',
-    marginBottom: 24
+    marginBottom: 24,
+    backdropFilter: 'blur(6px)',
+    boxShadow: '0 0 20px 2px rgba(0, 170, 255, 0.18), inset 0 0 30px rgba(0, 170, 255, 0.04)'
   },
   chartTitle: {
     color: 'white',
     fontSize: 16,
     fontWeight: 600,
     marginBottom: 20,
-    margin: '0 0 20px 0'
+    margin: '0 0 20px 0',
+    textShadow: '0 0 8px rgba(0, 170, 255, 0.4)'
   },
   emptyState: {
     textAlign: 'center',
-    padding: '60px 24px',
-    color: 'rgba(255, 255, 255, 0.4)'
+    padding: '48px 24px',
+    color: 'rgba(180, 225, 255, 0.5)',
+    background: 'rgba(0, 170, 255, 0.05)',
+    border: '1px dashed rgba(0, 170, 255, 0.3)',
+    borderRadius: 16
   },
   emptyTitle: {
     color: 'white',
@@ -266,8 +291,8 @@ const styles: Record<string, React.CSSProperties> = {
   spinner: {
     width: 40,
     height: 40,
-    border: '3px solid rgba(255, 255, 255, 0.1)',
-    borderTop: '3px solid #0099ff',
+    border: '3px solid rgba(0, 170, 255, 0.15)',
+    borderTop: '3px solid rgb(0, 170, 255)',
     borderRadius: '50%',
     animation: 'spin 0.8s linear infinite'
   }
