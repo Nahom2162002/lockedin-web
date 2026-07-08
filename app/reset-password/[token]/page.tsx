@@ -49,6 +49,15 @@ export default function ResetPasswordPage() {
     if (e.key === 'Enter') handleReset();
   };
 
+  const requirements = [
+    { text: 'At least 8 characters', met: password.length >= 8 },
+    { text: 'At least one uppercase letter', met: /[A-Z]/.test(password) },
+    { text: 'At least one lowercase letter', met: /[a-z]/.test(password) },
+    { text: 'At least one number', met: /[0-9]/.test(password) },
+    { text: 'At least one symbol', met: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password) },
+    { text: 'No more than 3 consecutive identical characters', met: !(/(.)\1{3,}/.test(password)) },
+  ];
+
   return (
     <div style={{
       display: 'flex',
@@ -116,6 +125,17 @@ export default function ResetPasswordPage() {
             fontSize: 14
           }}
         />
+
+        {password && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, margin: '-8px 0 0' }}>
+            {requirements.map((req, index) => (
+              <p key={index} style={{ color: req.met ? '#4CAF50' : '#ff4d4d', fontSize: 12, margin: 0 }}>
+                {req.met ? '✓' : '✗'} {req.text}
+              </p>
+            ))}
+          </div>
+        )}
+
         <input
           type="password"
           className="reset-input"
