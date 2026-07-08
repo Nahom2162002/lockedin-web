@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${resetToken}`;
 
     const { error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'LockedIn <support@deeplockin.com>',
       to: user.email,
       subject: 'LockedIn Password Reset',
       html: `
