@@ -73,6 +73,16 @@ export default function ResetPasswordPage() {
       padding: 24
     }}>
       <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
         .back-link { transition: color 0.15s ease; }
         .back-link:hover { color: rgba(120, 210, 255, 1) !important; }
         .reset-input { transition: box-shadow 0.2s ease, border-color 0.2s ease; }
@@ -87,6 +97,7 @@ export default function ResetPasswordPage() {
       </a>
 
       <div style={{
+        animation: 'fadeInUp 0.8s ease-out forwards',
         background: 'rgba(4, 6, 36, 0.55)',
         border: '1px solid rgba(0, 170, 255, 0.35)',
         borderRadius: 16,
