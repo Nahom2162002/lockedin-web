@@ -92,6 +92,7 @@ export default function DashboardPage() {
 
   return (
     <div style={styles.container}>
+      <div className="dashboard-content">
       <div style={styles.header}>
         <h1 style={styles.title}>🔒 LockedIn</h1>
         <p style={styles.subtitle}>Your focus dashboard</p>
@@ -164,8 +165,22 @@ export default function DashboardPage() {
           </div>
         </>
       )}
+      </div>
 
       <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .dashboard-content {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
         .stat-card {
           transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
