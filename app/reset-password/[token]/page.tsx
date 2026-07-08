@@ -83,18 +83,12 @@ export default function ResetPasswordPage() {
             transform: translateY(0);
           }
         }
-        .back-link { transition: color 0.15s ease; }
-        .back-link:hover { color: rgba(120, 210, 255, 1) !important; }
         .reset-input { transition: box-shadow 0.2s ease, border-color 0.2s ease; }
         .reset-input:focus { border-color: rgb(0, 170, 255); box-shadow: 0 0 8px 2px rgba(0, 170, 255, 0.45); outline: none; }
         .reset-btn { transition: box-shadow 0.2s ease, transform 0.1s ease; }
         .reset-btn:hover:not(:disabled) { box-shadow: 0 0 20px 4px rgba(0, 170, 255, 0.5); }
         .reset-btn:disabled { opacity: 0.6; cursor: default; }
       `}</style>
-
-      <a href="https://www.deeplockin.com" className="back-link" style={{ color: 'rgb(0, 170, 255)', fontSize: 14, textDecoration: 'none', marginBottom: 24 }}>
-        ← Back to LockedIn
-      </a>
 
       <div style={{
         animation: 'fadeInUp 0.8s ease-out forwards',
