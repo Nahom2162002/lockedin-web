@@ -12,7 +12,8 @@ const userSchema = new Schema({
   stripeCustomerId: { type: String },
   cancelAtPeriodEnd: { type: Boolean, default: false },
   strictMode: { type: Boolean, default: false },
-  trialEnd: { type: Date, default: null }
+  trialEnd: { type: Date, default: null },
+  hasHadTrial: { type: Boolean, default: false }
 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);

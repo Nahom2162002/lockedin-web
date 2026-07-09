@@ -20,10 +20,11 @@ export async function GET(req: NextRequest) {
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
 
         if (!user.stripeCustomerId) {
-            return NextResponse.json({ 
+            return NextResponse.json({
                 plan: user.plan,
                 cancelAtPeriodEnd: false,
-                currentPeriodEnd: null
+                currentPeriodEnd: null,
+                hasHadTrial: user.hasHadTrial ?? false
             }, { headers: corsHeaders });
         }
 
@@ -70,7 +71,8 @@ export async function GET(req: NextRequest) {
             cancelAtPeriodEnd,
             currentPeriodEnd,
             isTrialing,
-            trialEnd 
+            trialEnd,
+            hasHadTrial: user.hasHadTrial ?? false
         }, { headers: corsHeaders });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });

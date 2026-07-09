@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
             if (subscription.status === 'trialing') {
                 const updated = await User.findOneAndUpdate(
                     { stripeCustomerId: subscription.customer },
-                    { $set: { plan: 'pro', trialEnd: new Date(subscription.trial_end * 1000) } },
+                    { $set: { plan: 'pro', trialEnd: new Date(subscription.trial_end * 1000), hasHadTrial: true } },
                     { returnDocument: 'after' }
                 );
                 console.log('Trial started for:', updated?.username);

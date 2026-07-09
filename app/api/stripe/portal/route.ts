@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
                 plan: 'free',
                 cancelAtPeriodEnd: false,
                 trialEnd: null,
-                isTrialing: false
+                isTrialing: false,
+                hasHadTrial: true 
             });
 
             return NextResponse.json({
