@@ -368,6 +368,7 @@ export default function LandingPage() {
             </div>
             <h3 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Pro</h3>
             <p style={{ fontSize: 36, fontWeight: 800, margin: '0 0 4px' }}>$7<span style={{ fontSize: 16, fontWeight: 400, color: 'rgba(180, 225, 255, 0.55)' }}>/month</span></p>
+            <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: 13, margin: '0 0 28px' }}>14-day free trial - no credit card required</p>
             <p style={{ color: 'rgba(180, 225, 255, 0.45)', fontSize: 13, margin: '0 0 28px' }}>Cancel anytime</p>
             {[
               'Everything in Free',

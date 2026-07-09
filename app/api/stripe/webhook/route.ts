@@ -84,6 +84,25 @@ export async function POST(req: NextRequest) {
             );
             console.log('Plan set to free for:', updated?.username);
         }
+
+        if (event.type === 'customer.subscription.trial_will_end') {
+            const subscription = event.data.object as any;
+            console.log('Trial ending soon for:', subscription.customer);
+        }
+
+        if (event.type === 'customer.subscription.created') {
+            const subscription = event.data.object as any;
+            console.log('subscription.created - status:', subscription.status);
+
+            if (subscription.status === 'trialing') {
+                const updated = await User.findOneAndUpdate(
+                    { stripeCustomerId: subscription.customer },
+                    { $set: { plan: 'pro', trialEnd: new Date(subscription.trial_end * 1000) } },
+                    { returnDocument: 'after' }
+                );
+                console.log('Trial started for:', updated?.username);
+            }
+        }
     } catch (err: any) {
         console.log('Database error:', err.message);
         return NextResponse.json({ error: err.message }, { status: 500 });

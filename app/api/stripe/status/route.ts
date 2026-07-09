@@ -27,7 +27,6 @@ export async function GET(req: NextRequest) {
             }, { headers: corsHeaders });
         }
 
-        // Fetch live subscription status directly from Stripe
         const subscriptions = await stripe.subscriptions.list({
             customer: user.stripeCustomerId,
             limit: 1,
@@ -57,7 +56,11 @@ export async function GET(req: NextRequest) {
         const periodEnd = sub.items?.current_period_end || sub.current_period_end || sub.cancel_at;
         const currentPeriodEnd = periodEnd ? new Date(periodEnd * 1000).toISOString() : null;
 
-        // Sync to database if out of sync
+        const isTrialing = sub.status === 'trialing';
+        const trialEnd = sub.trial_end 
+            ? new Date((sub.trial_end as number) * 1000).toISOString() 
+            : null;
+
         if (cancelAtPeriodEnd !== user.cancelAtPeriodEnd) {
             await user.updateOne({ cancelAtPeriodEnd });
         }
@@ -65,7 +68,9 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({
             plan: user.plan,
             cancelAtPeriodEnd,
-            currentPeriodEnd
+            currentPeriodEnd,
+            isTrialing,
+            trialEnd 
         }, { headers: corsHeaders });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });

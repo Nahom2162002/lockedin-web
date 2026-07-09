@@ -11,7 +11,8 @@ const userSchema = new Schema({
   plan: { type: String, enum: ['free', 'pro'], default: 'free' },
   stripeCustomerId: { type: String },
   cancelAtPeriodEnd: { type: Boolean, default: false },
-  strictMode: { type: Boolean, default: false }
+  strictMode: { type: Boolean, default: false },
+  trialEnd: { type: Date, default: null }
 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);

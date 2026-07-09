@@ -43,6 +43,10 @@ export async function POST(req: NextRequest) {
                 quantity: 1
             }],
             mode: 'subscription',
+            subscription_data: {
+                trial_period_days: 14
+            },
+            payment_method_collection: 'if_required',
             success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
         });
