@@ -49,7 +49,8 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({
                 plan: 'free',
                 cancelAtPeriodEnd: false,
-                currentPeriodEnd: null
+                currentPeriodEnd: null,
+                hasHadTrial: user.hasHadTrial ?? false
             }, { headers: corsHeaders });
         }
 
