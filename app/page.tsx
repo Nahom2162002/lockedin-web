@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const CHROME_STORE_URL = 'https://chrome.google.com/webstore/detail/lockedin/bhkgkhhdenaaeoiflaonmmpojndbpkam';
+const CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/lockedin/mdgfihcmdelgebehmndaeiomgbhilchj';
 
 export default function LandingPage() {
   return (
