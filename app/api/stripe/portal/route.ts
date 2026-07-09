@@ -48,13 +48,17 @@ export async function POST(req: NextRequest) {
 
             return NextResponse.json({
                 cancelled: true,
-                message: 'Trial cancelled successfully'
+                message: 'Trial cancelled successfully',
+                url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
             }, { headers: corsHeaders });
         }
 
+        const authHeader = req.headers.get('authorization');
+        const token = authHeader?.split(' ')[1];
+
         const session = await stripe.billingPortal.sessions.create({
             customer: user.stripeCustomerId,
-            return_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`
+            return_url: `${process.env.NEXT_PUBLIC_APP_URL}/portal-return?token=${token}`
         });
 
         return NextResponse.json({ url: session.url }, { headers: corsHeaders });
