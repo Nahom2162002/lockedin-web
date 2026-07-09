@@ -24,6 +24,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Account already exists' }, { status: 400, headers: corsHeaders });
     }
 
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return NextResponse.json({ error: 'A user account with this email already exists' }, { status: 400, headers: corsHeaders });
+    }
+
     const passwordError = validatePassword(password);
     if (passwordError) {
       return NextResponse.json({ error: passwordError }, { status: 400, headers: corsHeaders });
@@ -40,6 +45,15 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Account created!', userId: user._id });
   } catch (err: any) {
+    if (err.code === 11000) {
+      const field = Object.keys(err.keyPattern ?? {})[0];
+      const message = field === 'email'
+        ? 'A user account with this email already exists'
+        : field === 'username'
+          ? 'Account already exists'
+          : 'A user account with these details already exists';
+      return NextResponse.json({ error: message }, { status: 400, headers: corsHeaders });
+    }
     return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
   }
 }
