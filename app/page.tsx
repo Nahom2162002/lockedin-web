@@ -55,7 +55,7 @@ export default function LandingPage() {
               textDecoration: 'none'
              }}
            >
-            Add to Chrome - Free
+            Add to Chrome 
            </a>
         </div>
       </nav>
@@ -118,7 +118,7 @@ export default function LandingPage() {
               display: 'inline-block'
              }}
           >
-            Add to Chrome - It's Free
+            Add to Chrome 
           </a>
           <a href="#features"
              className="ghost-btn"
@@ -434,7 +434,7 @@ export default function LandingPage() {
             display: 'inline-block'
            }}
         >
-          Add to Chrome - It's Free
+          Add to Chrome 
         </a>
       </section>
 
