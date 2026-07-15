@@ -1,404 +1,455 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import type { CSSProperties } from 'react';
+import { CHROME_STORE_URL } from '@/lib/constants';
+import { inter } from '@/lib/fonts';
+import SiteNav from '@/components/landing/SiteNav';
+import PersonaHero from '@/components/landing/PersonaHero';
 
-const CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/lockedin/mdgfihcmdelgebehmndaeiomgbhilchj';
+const FEATURES = [
+  {
+    title: 'Website Blocking',
+    tier: 'FREE' as const,
+    desc: 'Block any websites during specific dates and times. Set it and forget it.',
+  },
+  {
+    title: 'Recurring Schedules',
+    tier: 'PRO' as const,
+    desc: 'Block sites every weekday 9-5 without re-adding them each day.',
+  },
+  {
+    title: 'Category Blocking',
+    tier: 'PRO' as const,
+    desc: 'Block entire categories like Social Media, Gaming, or News in one click.',
+  },
+  {
+    title: 'Stats Dashboard',
+    tier: 'PRO' as const,
+    desc: 'Track your focus time, streaks, and which sites tried to steal your attention.',
+  },
+  {
+    title: 'Strict Mode',
+    tier: 'PRO' as const,
+    desc: 'Make it harder to disable blocks mid-session with a confirmation phrase.',
+  },
+  {
+    title: 'Cross-Device Sync',
+    tier: 'PRO' as const,
+    desc: 'Your blocks stay in sync across all your Chrome browsers automatically.',
+  },
+];
+
+const AUDIENCES = [
+  { label: 'STUDENTS', desc: 'Block social feeds during study blocks and exam weeks.' },
+  { label: 'REMOTE WORKERS', desc: 'Recurring 9-5 schedules keep meetings-adjacent scrolling in check.' },
+  { label: 'FREELANCERS', desc: 'Bill hours you actually deep-worked, tracked automatically.' },
+];
+
+const cardStyle: CSSProperties = {
+  background: 'rgba(30,144,255,.06)',
+  border: '1px solid rgba(79,195,255,.2)',
+  borderRadius: 14,
+};
 
 export default function LandingPage() {
   return (
-    <main style={{
-      fontFamily: 'Inter, sans-serif',
-      background: `
-        radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0, 170, 255, 0.14), transparent 60%),
-        radial-gradient(ellipse 900px 600px at 85% 105%, rgba(0, 120, 255, 0.12), transparent 60%),
-        linear-gradient(180deg, #050726 0%, #000004 100%)`,
-      minHeight: '100vh',
-      color: 'white'
-    }}>
-      <meta name="google-site-verification" content="qk59OfCH8Pf83lOGIj4_3dnBprK3wZdcE7ulhViQOZY" />
+    <main
+      className={inter.className}
+      style={{
+        background:
+          'radial-gradient(ellipse 1000px 600px at 20% -10%, rgba(30,144,255,.22), transparent 60%), radial-gradient(ellipse 900px 700px at 90% 10%, rgba(0,194,255,.14), transparent 60%), #030713',
+        color: '#fff',
+        minHeight: '100vh',
+      }}
+    >
       <style>{`
         .nav-link { transition: color 0.15s ease; }
-        .nav-link:hover { color: rgb(0, 170, 255) !important; }
+        .nav-link:hover { color: #8adfff !important; }
         .cta-btn { transition: box-shadow 0.2s ease, transform 0.1s ease; }
-        .cta-btn:hover { box-shadow: 0 0 20px 4px rgba(0, 170, 255, 0.5); transform: translateY(-1px); }
+        .cta-btn:hover { box-shadow: 0 0 24px 4px rgba(30,144,255,.55); transform: translateY(-1px); }
         .ghost-btn { transition: border-color 0.2s ease, background 0.2s ease; }
-        .ghost-btn:hover { border-color: rgba(0, 170, 255, 0.6); background: rgba(0, 170, 255, 0.12); }
+        .ghost-btn:hover { border-color: rgba(79,195,255,.6); background: rgba(30,144,255,.16); }
         .feature-card { transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-        .feature-card:hover { transform: translateY(-3px); border-color: rgba(0, 170, 255, 0.5); box-shadow: 0 0 20px 2px rgba(0, 170, 255, 0.2); }
+        .feature-card:hover { transform: translateY(-3px); border-color: rgba(79,195,255,.5); box-shadow: 0 0 20px 2px rgba(30,144,255,.2); }
         .plan-card { transition: transform 0.15s ease, box-shadow 0.2s ease; }
         .plan-card:hover { transform: translateY(-3px); }
         .footer-link { transition: color 0.15s ease; }
-        .footer-link:hover { color: rgb(0, 170, 255) !important; }
+        .footer-link:hover { color: #8adfff !important; }
       `}</style>
 
-      <nav style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '20px 40px',
-        borderBottom: '1px solid rgba(0, 170, 255, 0.15)'
-      }}>
-        <span style={{ fontSize: 20, fontWeight: 700, textShadow: '0 0 10px rgba(0, 170, 255, 0.5)' }}>🔒 LockedIn</span>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-          <a href="#features" className="nav-link" style={{ color: 'rgba(180, 225, 255, 0.65)', fontSize: 14, textDecoration: 'none' }}>Features</a>
-          <a href="#pricing" className="nav-link" style={{ color: 'rgba(180, 225, 255, 0.65)', fontSize: 14, textDecoration: 'none' }}>Pricing</a>
-          <a href={CHROME_STORE_URL}
-             target="_blank"
-             rel="noreferrer"
-             className="cta-btn"
-             style={{
-              background: 'linear-gradient(135deg, #0099ff, #0055ff)',
-              boxShadow: '0 0 12px 1px rgba(0, 170, 255, 0.35)',
-              color: 'white',
-              padding: '8px 18px',
-              borderRadius: 8,
-              fontSize: 14,
-              fontWeight: 600,
-              textDecoration: 'none'
-             }}
-           >
-            Add to Chrome 
-           </a>
-        </div>
-      </nav>
+      <SiteNav showLinks />
 
-      <section style={{
-        textAlign: 'center',
-        padding: '100px 24px 80px',
-        maxWidth: 760,
-        margin: '0 auto'
-      }}>
-        <div style={{
-          display: 'inline-block',
-          background: 'rgba(0, 170, 255, 0.1)',
-          border: '1px solid rgba(0, 170, 255, 0.35)',
-          borderRadius: 20,
-          padding: '6px 16px',
-          fontSize: 13,
-          color: 'rgb(0, 170, 255)',
-          marginBottom: 24
-        }}>
-          Chrome Extension - Free to install
-        </div>
-        <h1 style={{
-          fontSize: 52,
-          fontWeight: 800,
-          lineHeight: 1.15,
-          margin: '0 0 24px',
-          background: 'linear-gradient(135deg, #ffffff, rgba(180, 225, 255, 0.8))',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent'
-        }}>
-          Stop getting distracted.<br />Start getting things done.
-        </h1>
-        <p style={{
-          fontSize: 18,
-          color: 'rgba(180, 225, 255, 0.6)',
-          lineHeight: 1.7,
-          margin: '0 0 40px',
-          maxWidth: 560,
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}>
-          LockedIn blocks distracting websites so you can focus on what actually matters.
-          Built for students, remote workers, and anyone serious about their productivity.
-        </p>
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href={CHROME_STORE_URL}
-             target="_blank"
-             rel="noreferrer"
-             className="cta-btn"
-             style={{
-              background: 'linear-gradient(135deg, #0099ff, #0055ff)',
-              boxShadow: '0 0 16px 2px rgba(0, 170, 255, 0.4)',
-              color: 'white',
-              padding: '14px 32px',
-              borderRadius: 10,
-              fontSize: 16,
-              fontWeight: 700,
-              textDecoration: 'none',
-              display: 'inline-block'
-             }}
-          >
-            Add to Chrome 
-          </a>
-          <a href="#features"
-             className="ghost-btn"
-             style={{
-              background: 'rgba(0, 170, 255, 0.07)',
-              border: '1px solid rgba(0, 170, 255, 0.3)',
-              color: 'white',
-              padding: '14px 32px',
-              borderRadius: 10,
-              fontSize: 16,
-              fontWeight: 600,
-              textDecoration: 'none',
-              display: 'inline-block'
-             }}
-          >
-            See how it works
-          </a>
-        </div>
-      </section>
-
-      <section style={{
-        textAlign: 'center',
-        padding: '0 24px 80px',
-        color: 'rgba(180, 225, 255, 0.4)',
-        fontSize: 13
-      }}>
-        Trusted by students, freelancers, and remote workers to stay focused
-      </section>
-
-      <section id="features" style={{
-        maxWidth: 1000,
-        margin: '0 auto',
-        padding: '80px 24px'
-      }}>
-        <h2 style={{
-          textAlign: 'center',
-          fontSize: 36,
-          fontWeight: 700,
-          marginBottom: 16,
-          textShadow: '0 0 12px rgba(0, 170, 255, 0.35)'
-        }}>
-          Everything you need to stay focused
-        </h2>
-        <p style={{
-          textAlign: 'center',
-          color: 'rgba(180, 225, 255, 0.55)',
-          fontSize: 16,
-          marginBottom: 56,
-          maxWidth: 500,
-          margin: '0 auto 56px'
-        }}>
-          Free to start. Upgrade when you're ready for the full toolkit.
-        </p>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 20
-        }}>
-          {[
-            {
-              emoji: '🔒',
-              title: 'Website Blocking',
-              desc: 'Block any websites during specific dates and times. Set it and forget it.',
-              free: true
-            },
-            {
-              emoji: '🔁',
-              title: 'Recurring Schedules',
-              desc: 'Block sites every weekday 9-5 without re-adding them each day.',
-              free: false
-            },
-            {
-              emoji: '🗂',
-              title: 'Category Blocking',
-              desc: 'Block entire categories like Social Media, Gaming, or News in one click.',
-              free: false
-            },
-            {
-              emoji: '📊',
-              title: 'Stats Dashboard',
-              desc: 'Track your focus time, streaks, and which sites tried to steal your attention.',
-              free: false
-            },
-            {
-              emoji: '🚨',
-              title: 'Strict Mode',
-              desc: 'Make it harder to disable blocks mid-session with a confirmation phrase.',
-              free: false
-            },
-            {
-              emoji: '🔄',
-              title: 'Cross-Device Sync',
-              desc: 'Your blocks stay in sync across all your Chrome browsers automatically.',
-              free: false
-            }
-           ].map((f, i) => (
-             <div key={i} className="feature-card" style={{
-              background: 'rgba(0, 170, 255, 0.06)',
-              border: '1px solid rgba(0, 170, 255, 0.22)',
-              borderRadius: 16,
-              padding: '28px 24px',
-              boxShadow: '0 0 10px 1px rgba(0, 170, 255, 0.1)'
-             }}>
-              <p style={{ fontSize: 32, margin: '0 0 12px' }}>{f.emoji}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <h3 style={{ fontSize: 17, fontWeight: 700, margin: 0 }}>{f.title}</h3>
-                <span style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  padding: '2px 8px',
-                  borderRadius: 20,
-                  background: f.free ? 'rgba(0, 170, 255, 0.12)' : 'rgba(0, 170, 255, 0.18)',
-                  color: f.free ? 'rgba(180, 225, 255, 0.65)' : 'rgb(0, 170, 255)',
-                  border: f.free ? '1px solid rgba(0, 170, 255, 0.25)' : '1px solid rgba(0, 170, 255, 0.4)'
-                }}>
-                  {f.free ? 'FREE' : 'PRO'}
-                </span>
-              </div>
-              <p style={{ color: 'rgba(180, 225, 255, 0.55)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
-                {f.desc}
-              </p>
-             </div>
-           ))}
-        </div>
-      </section>
-
-      <section style={{
-        maxWidth: 700,
-        margin: '0 auto',
-        padding: '80px 24px',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 16, textShadow: '0 0 12px rgba(0, 170, 255, 0.35)' }}>
-          How it works
-        </h2>
-        <p style={{ color: 'rgba(180, 225, 255, 0.55)', fontSize: 16, marginBottom: 56 }}>
-          Up and running in under a minute
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, textAlign: 'left' }}>
-          {[
-            { step: '1', title: 'Install the extension', desc: 'Add LockedIn to Chrome for free from the Chrome Web Store.' },
-            { step: '2', title: 'Add sites to block', desc: 'Enter any URL and set the date and time window you want it blocked.' },
-            { step: '3', title: 'Stay focused', desc: 'LockedIn handles the rest. Try to visit a blocked site and you\'ll be redirected automatically.' },
-            { step: '4', title: 'Upgrade to more', desc: 'Unlock recurring schedules, category blocking, stats, and strict mode with Pro.' }
-          ].map((s, i) => (
-            <div key={i} style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-              <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #0099ff, #0055ff)',
-                boxShadow: '0 0 10px 1px rgba(0, 170, 255, 0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
+      {/* Hero */}
+      <section style={{ position: 'relative', padding: '88px 24px 0', textAlign: 'center', overflow: 'hidden' }}>
+        <Image
+          src="/futuristic-bg.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+            opacity: 0.24,
+            maskImage: 'linear-gradient(to bottom, black 30%, transparent 92%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 92%)',
+          }}
+        />
+        <div style={{ position: 'relative', maxWidth: 720, margin: '0 auto' }}>
+          <PersonaHero />
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
+            <a
+              href={CHROME_STORE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="cta-btn"
+              style={{
+                background: 'linear-gradient(135deg,#1e90ff,#00c2ff)',
+                boxShadow: '0 0 20px 3px rgba(30,144,255,.45)',
+                color: '#fff',
+                padding: '15px 32px',
+                borderRadius: 10,
                 fontSize: 16,
-                flexShrink: 0
-              }}>
-                {s.step}
+                fontWeight: 700,
+                textDecoration: 'none',
+              }}
+            >
+              Add to Chrome — free
+            </a>
+            <a
+              href="#how"
+              className="ghost-btn"
+              style={{
+                background: 'rgba(30,144,255,.1)',
+                border: '1px solid rgba(79,195,255,.35)',
+                color: '#fff',
+                padding: '15px 32px',
+                borderRadius: 10,
+                fontSize: 16,
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              See how it works
+            </a>
+          </div>
+        </div>
+        <div style={{ position: 'relative', maxWidth: 820, margin: '0 auto', padding: '0 24px' }}>
+          <div
+            style={{
+              border: '1px solid rgba(79,195,255,.3)',
+              borderRadius: 16,
+              background: 'linear-gradient(180deg, rgba(30,144,255,.1), rgba(10,18,48,.4))',
+              boxShadow: '0 0 40px 6px rgba(30,144,255,.15)',
+              height: 320,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 13, color: 'rgba(200,225,255,.4)' }}>
+              [ product screenshot: focus-session dashboard with active blocklist + streak ]
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* Pain-point narrative */}
+      <section id="how" style={{ maxWidth: 940, margin: '0 auto', padding: '120px 24px 20px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.25, margin: '0 0 16px' }}>
+          &ldquo;3 hours on YouTube.
+          <br />0 pages of your essay.&rdquo;
+        </h2>
+        <p style={{ fontSize: 16, color: 'rgba(200,225,255,.6)', margin: '0 0 56px' }}>
+          Sound familiar? LockedIn shuts the door on distraction before it opens.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, textAlign: 'left', marginBottom: 64 }}>
+          <div
+            style={{
+              border: '1px solid rgba(255,90,90,.25)',
+              background: 'rgba(255,60,60,.06)',
+              borderRadius: 16,
+              height: 220,
+              padding: 22,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#ff8a8a', letterSpacing: '.5px' }}>BEFORE</span>
+            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, color: 'rgba(255,200,200,.5)' }}>
+              [ screenshot: 20 open tabs, notifications everywhere ]
+            </span>
+          </div>
+          <div
+            style={{
+              border: '1px solid rgba(79,195,255,.3)',
+              background: 'rgba(30,144,255,.08)',
+              borderRadius: 16,
+              height: 220,
+              padding: 22,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              boxShadow: '0 0 24px 2px rgba(30,144,255,.15)',
+            }}
+          >
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#4fc3ff', letterSpacing: '.5px' }}>AFTER</span>
+            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, color: 'rgba(200,225,255,.5)' }}>
+              [ screenshot: one calm tab, blocklist active ]
+            </span>
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 26, maxWidth: 520, margin: '0 auto', textAlign: 'left' }}>
+          {[
+            { title: 'Pick your distractions', desc: 'Add the sites that always pull you off track.' },
+            { title: 'Set your hours', desc: 'One-time or recurring blocks — your schedule, your rules.' },
+            { title: 'Lock in', desc: 'LockedIn handles the rest — no willpower required.' },
+          ].map((step, i) => (
+            <div key={step.title} style={{ display: 'flex', gap: 18, alignItems: 'flex-start' }}>
+              <div
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg,#1e90ff,#00c2ff)',
+                  boxShadow: '0 0 12px 1px rgba(30,144,255,.4)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 700,
+                  flexShrink: 0,
+                }}
+              >
+                {i + 1}
               </div>
               <div>
-                <h3 style={{ fontSize: 17, fontWeight: 700, margin: '0 0 6px' }}>{s.title}</h3>
-                <p style={{ color: 'rgba(180, 225, 255, 0.55)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{s.desc}</p>
+                <h3 style={{ margin: '0 0 4px', fontSize: 16, fontWeight: 700 }}>{step.title}</h3>
+                <p style={{ margin: 0, fontSize: 14, color: 'rgba(200,225,255,.55)' }}>{step.desc}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="pricing" style={{
-        maxWidth: 800,
-        margin: '0 auto',
-        padding: '80px 24px'
-      }}>
-        <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 700, marginBottom: 16, textShadow: '0 0 12px rgba(0, 170, 255, 0.35)' }}>
-          Simple pricing
+      {/* Persona feature cards */}
+      <section id="audiences" style={{ maxWidth: 1000, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>
+          Built for every kind of focus
         </h2>
-        <p style={{ textAlign: 'center', color: 'rgba(180, 225, 255, 0.55)', fontSize: 16, marginBottom: 56 }}>
+        <p style={{ textAlign: 'center', color: 'rgba(200,225,255,.55)', fontSize: 15, margin: '0 0 48px' }}>
+          Same tool, different reasons to lock in.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
+          {AUDIENCES.map((a) => (
+            <div key={a.label} style={{ ...cardStyle, padding: 26 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: '#4fc3ff', margin: '0 0 8px', letterSpacing: '.5px' }}>
+                {a.label}
+              </p>
+              <p style={{ fontSize: 14, color: 'rgba(200,225,255,.6)', lineHeight: 1.6, margin: 0 }}>{a.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Full feature list */}
+      <section id="features" style={{ maxWidth: 1000, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>
+          Everything you need to stay focused
+        </h2>
+        <p style={{ textAlign: 'center', color: 'rgba(200,225,255,.55)', fontSize: 15, margin: '0 0 48px' }}>
+          Free to start. Upgrade when you&apos;re ready for the full toolkit.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+          {FEATURES.map((f) => (
+            <div key={f.title} className="feature-card" style={{ ...cardStyle, borderRadius: 16, padding: '28px 24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <h3 style={{ fontSize: 17, fontWeight: 700, margin: 0 }}>{f.title}</h3>
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    padding: '2px 8px',
+                    borderRadius: 20,
+                    background: f.tier === 'FREE' ? 'rgba(30,144,255,.15)' : 'rgba(30,144,255,.2)',
+                    color: f.tier === 'FREE' ? 'rgba(200,225,255,.7)' : '#4fc3ff',
+                    border: f.tier === 'FREE' ? '1px solid rgba(79,195,255,.3)' : '1px solid rgba(79,195,255,.4)',
+                  }}
+                >
+                  {f.tier}
+                </span>
+              </div>
+              <p style={{ color: 'rgba(200,225,255,.55)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Proof bento grid */}
+      <section style={{ maxWidth: 960, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 style={{ textAlign: 'center', fontSize: 32, fontWeight: 700, margin: '0 0 44px' }}>
+          The proof is in the focus time
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'auto auto', gap: 20 }}>
+          <div
+            style={{
+              gridColumn: '1/3',
+              background: 'linear-gradient(135deg, rgba(30,144,255,.18), rgba(0,194,255,.1))',
+              border: '1px solid rgba(79,195,255,.3)',
+              borderRadius: 16,
+              padding: 36,
+              textAlign: 'center',
+              boxShadow: '0 0 24px 2px rgba(30,144,255,.15)',
+            }}
+          >
+            <p
+              style={{
+                fontSize: 44,
+                fontWeight: 800,
+                margin: '0 0 6px',
+                background: 'linear-gradient(135deg,#fff,#a9dcff)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              14,236 hrs
+            </p>
+            <p style={{ fontSize: 14, color: 'rgba(200,225,255,.55)', margin: 0 }}>
+              of focus time logged by LockedIn users this week
+            </p>
+          </div>
+          <div style={{ ...cardStyle, borderRadius: 16, padding: 28 }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: '#4fc3ff', margin: '0 0 10px', letterSpacing: '.5px' }}>
+              CATEGORY BLOCKING
+            </p>
+            <p style={{ fontSize: 14, color: 'rgba(200,225,255,.6)', lineHeight: 1.6, margin: 0 }}>
+              Block entire categories — Social, Gaming, News — in one click.
+            </p>
+          </div>
+          <div style={{ ...cardStyle, borderRadius: 16, padding: 28 }}>
+            <p style={{ fontSize: 14, color: 'rgba(230,240,255,.8)', lineHeight: 1.6, margin: '0 0 14px', fontStyle: 'italic' }}>
+              &ldquo;I finally finish my freelance projects before the deadline instead of the night before.&rdquo;
+            </p>
+            <p style={{ fontSize: 12, color: 'rgba(200,225,255,.45)', margin: 0 }}>— Priya M., freelance designer</p>
+          </div>
+          <div
+            style={{
+              gridColumn: '1/3',
+              border: '1px solid rgba(79,195,255,.25)',
+              borderRadius: 16,
+              height: 180,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(10,18,48,.4)',
+            }}
+          >
+            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, color: 'rgba(200,225,255,.4)' }}>
+              [ screenshot: stats dashboard with streaks + weekly focus chart ]
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>Simple pricing</h2>
+        <p style={{ textAlign: 'center', color: 'rgba(200,225,255,.55)', fontSize: 15, margin: '0 0 48px' }}>
           Start free. Upgrade when you need more.
         </p>
-
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          <div className="plan-card" style={{
-            background: 'rgba(0, 170, 255, 0.06)',
-            border: '1px solid rgba(0, 170, 255, 0.22)',
-            borderRadius: 16,
-            padding: '32px 28px',
-            boxShadow: '0 0 10px 1px rgba(0, 170, 255, 0.1)'
-          }}>
-            <h3 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Free</h3>
-            <p style={{ fontSize: 36, fontWeight: 800, margin: '0 0 4px' }}>$0</p>
-            <p style={{ color: 'rgba(180, 225, 255, 0.45)', fontSize: 13, margin: '0 0 28px' }}>Forever free</p>
-            {[
-              'Block up to 3 websites',
-              'Date and time restrictions',
-              'Instant blocking'
-            ].map((f, i) => (
-              <p key={i} style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: 14, margin: '0 0 10px', display: 'flex', gap: 8, alignItems: 'center' }}>
-                <span style={{ color: 'rgb(0, 170, 255)' }}>✓</span> {f}
+          <div className="plan-card" style={{ ...cardStyle, borderRadius: 16, padding: '32px 28px' }}>
+            <h3 style={{ fontSize: 19, fontWeight: 700, margin: '0 0 8px' }}>Free</h3>
+            <p style={{ fontSize: 34, fontWeight: 800, margin: '0 0 4px' }}>$0</p>
+            <p style={{ color: 'rgba(200,225,255,.4)', fontSize: 13, margin: '0 0 24px' }}>Forever free</p>
+            {['Block up to 3 websites', 'Date and time restrictions', 'Instant blocking'].map((f, i, arr) => (
+              <p
+                key={f}
+                style={{ fontSize: 14, color: 'rgba(230,240,255,.75)', margin: i === arr.length - 1 ? '0 0 24px' : '0 0 8px' }}
+              >
+                ✓ {f}
               </p>
             ))}
-            <a href={CHROME_STORE_URL}
-               target="_blank"
-               rel="noreferrer"
-               className="ghost-btn"
-               style={{
+            <a
+              href={CHROME_STORE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="ghost-btn"
+              style={{
                 display: 'block',
                 textAlign: 'center',
-                marginTop: 28,
-                padding: '12px',
+                padding: 12,
                 borderRadius: 8,
-                border: '1px solid rgba(0, 170, 255, 0.35)',
-                color: 'white',
+                border: '1px solid rgba(79,195,255,.35)',
+                color: '#fff',
                 textDecoration: 'none',
                 fontSize: 14,
-                fontWeight: 600
-               }}
+                fontWeight: 600,
+              }}
             >
               Get started free
             </a>
           </div>
 
-          <div className="plan-card" style={{
-            background: 'linear-gradient(135deg, rgba(0, 170, 255, 0.12), rgba(0, 85, 255, 0.12))',
-            border: '1px solid rgba(0, 170, 255, 0.4)',
-            borderRadius: 16,
-            padding: '32px 28px',
-            position: 'relative',
-            boxShadow: '0 0 24px 2px rgba(0, 170, 255, 0.25)'
-          }}>
-            <div style={{
-              position: 'absolute',
-              top: -12,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: 'linear-gradient(135deg, #0099ff, #0055ff)',
-              boxShadow: '0 0 10px 1px rgba(0, 170, 255, 0.5)',
-              color: 'white',
-              fontSize: 11,
-              fontWeight: 700,
-              padding: '4px 14px',
-              borderRadius: 20
-            }}>
+          <div
+            className="plan-card"
+            style={{
+              background: 'linear-gradient(135deg, rgba(30,144,255,.14), rgba(0,194,255,.1))',
+              border: '1px solid rgba(79,195,255,.4)',
+              borderRadius: 16,
+              padding: '32px 28px',
+              position: 'relative',
+              boxShadow: '0 0 24px 2px rgba(30,144,255,.2)',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                top: -12,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: 'linear-gradient(135deg,#1e90ff,#00c2ff)',
+                color: '#fff',
+                fontSize: 11,
+                fontWeight: 700,
+                padding: '4px 14px',
+                borderRadius: 20,
+              }}
+            >
               MOST POPULAR
             </div>
-            <h3 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Pro</h3>
-            <p style={{ fontSize: 36, fontWeight: 800, margin: '0 0 4px' }}>$7<span style={{ fontSize: 16, fontWeight: 400, color: 'rgba(180, 225, 255, 0.55)' }}>/month</span></p>
-            <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: 13, margin: '0 0 28px' }}>14-day free trial - no credit card required</p>
-            <p style={{ color: 'rgba(180, 225, 255, 0.45)', fontSize: 13, margin: '0 0 28px' }}>Cancel anytime</p>
-            {[
-              'Everything in Free',
-              'Unlimited site blocking',
-              'Recurring schedules',
-              'Category blocking',
-              'Stats dashboard',
-              'Strict mode',
-              'Cross-device sync'
-            ].map((f, i) => (
-              <p key={i} style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: 14, margin: '0 0 10px', display: 'flex', gap: 8, alignItems: 'center' }}>
-                <span style={{ color: 'rgb(0, 170, 255)' }}>✓</span> {f}
-              </p>
-            ))}
-            <a href={CHROME_STORE_URL}
-               target="_blank"
-               rel="noreferrer"
-               className="cta-btn"
-               style={{
+            <h3 style={{ fontSize: 19, fontWeight: 700, margin: '0 0 8px' }}>Pro</h3>
+            <p style={{ fontSize: 34, fontWeight: 800, margin: '0 0 4px' }}>
+              $7<span style={{ fontSize: 15, fontWeight: 400, color: 'rgba(200,225,255,.55)' }}>/month</span>
+            </p>
+            <p style={{ color: 'rgba(200,225,255,.4)', fontSize: 13, margin: '0 0 24px' }}>
+              14-day free trial · cancel anytime
+            </p>
+            {['Everything in Free', 'Recurring schedules & category blocking', 'Stats dashboard, strict mode, sync'].map(
+              (f, i, arr) => (
+                <p
+                  key={f}
+                  style={{ fontSize: 14, color: 'rgba(230,240,255,.75)', margin: i === arr.length - 1 ? '0 0 24px' : '0 0 8px' }}
+                >
+                  ✓ {f}
+                </p>
+              )
+            )}
+            <a
+              href={CHROME_STORE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="cta-btn"
+              style={{
                 display: 'block',
                 textAlign: 'center',
-                marginTop: 28,
-                padding: '12px',
+                padding: 12,
                 borderRadius: 8,
-                background: 'linear-gradient(135deg, #0099ff, #0055ff)',
-                color: 'white',
+                background: 'linear-gradient(135deg,#1e90ff,#00c2ff)',
+                color: '#fff',
                 textDecoration: 'none',
                 fontSize: 14,
-                fontWeight: 700
-               }}
+                fontWeight: 700,
+              }}
             >
               Upgrade to Pro
             </a>
@@ -406,60 +457,56 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section style={{
-        textAlign: 'center',
-        padding: '80px 24px 100px',
-        maxWidth: 600,
-        margin: '0 auto'
-      }}>
-        <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 16, textShadow: '0 0 12px rgba(0, 170, 255, 0.35)' }}>
-          Ready to take back your focus?
-        </h2>
-        <p style={{ color: 'rgba(180, 225, 255, 0.55)', fontSize: 16, marginBottom: 40, lineHeight: 1.7 }}>
+      {/* Final CTA */}
+      <section style={{ maxWidth: 600, margin: '0 auto', padding: '120px 24px 100px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: 34, fontWeight: 800, margin: '0 0 16px' }}>Ready to take back your focus?</h2>
+        <p style={{ color: 'rgba(200,225,255,.55)', fontSize: 16, margin: '0 0 36px', lineHeight: 1.7 }}>
           Join thousands of students and professionals who use LockedIn to stay on track every day.
         </p>
-        <a href={CHROME_STORE_URL}
-           target="_blank"
-           rel="noreferrer"
-           className="cta-btn"
-           style={{
-            background: 'linear-gradient(135deg, #0099ff, #0055ff)',
-            boxShadow: '0 0 16px 2px rgba(0, 170, 255, 0.4)',
-            color: 'white',
+        <a
+          href={CHROME_STORE_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="cta-btn"
+          style={{
+            display: 'inline-block',
+            background: 'linear-gradient(135deg,#1e90ff,#00c2ff)',
+            boxShadow: '0 0 20px 3px rgba(30,144,255,.4)',
+            color: '#fff',
             padding: '16px 40px',
             borderRadius: 10,
             fontSize: 16,
             fontWeight: 700,
             textDecoration: 'none',
-            display: 'inline-block'
-           }}
+          }}
         >
-          Add to Chrome 
+          Add to Chrome
         </a>
       </section>
 
-      <footer style={{
-        borderTop: '1px solid rgba(0, 170, 255, 0.15)',
-        padding: '32px 40px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: 16
-      }}>
-        <span style={{ color: 'rgba(180, 225, 255, 0.35)', fontSize: 13 }}>
+      <footer
+        style={{
+          borderTop: '1px solid rgba(79,195,255,.15)',
+          padding: '32px 48px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 16,
+        }}
+      >
+        <span style={{ color: 'rgba(200,225,255,.35)', fontSize: 13 }}>
           © {new Date().getFullYear()} LockedIn. All rights reserved.
         </span>
         <div style={{ display: 'flex', gap: 24 }}>
-          <Link href="/privacy" className="footer-link" style={{ color: 'rgba(180, 225, 255, 0.35)', fontSize: 13, textDecoration: 'none' }}>
+          <Link href="/privacy" className="footer-link" style={{ color: 'rgba(200,225,255,.35)', fontSize: 13, textDecoration: 'none' }}>
             Privacy Policy
           </Link>
-          <Link href="/terms" className="footer-link" style={{ color: 'rgba(180, 225, 255, 0.35)', fontSize: 13, textDecoration: 'none' }}>
+          <Link href="/terms" className="footer-link" style={{ color: 'rgba(200,225,255,.35)', fontSize: 13, textDecoration: 'none' }}>
             Terms of Service
           </Link>
         </div>
       </footer>
-
     </main>
   );
 }
