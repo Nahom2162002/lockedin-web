@@ -162,43 +162,6 @@ export default function LandingPage() {
         <p style={{ fontSize: 16, color: 'rgba(200,225,255,.6)', margin: '0 0 56px' }}>
           Sound familiar? LockedIn shuts the door on distraction before it opens.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, textAlign: 'left', marginBottom: 64 }}>
-          <div
-            style={{
-              border: '1px solid rgba(255,90,90,.25)',
-              background: 'rgba(255,60,60,.06)',
-              borderRadius: 16,
-              height: 220,
-              padding: 22,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 700, color: '#ff8a8a', letterSpacing: '.5px' }}>BEFORE</span>
-            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, color: 'rgba(255,200,200,.5)' }}>
-              [ screenshot: 20 open tabs, notifications everywhere ]
-            </span>
-          </div>
-          <div
-            style={{
-              border: '1px solid rgba(79,195,255,.3)',
-              background: 'rgba(30,144,255,.08)',
-              borderRadius: 16,
-              height: 220,
-              padding: 22,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              boxShadow: '0 0 24px 2px rgba(30,144,255,.15)',
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 700, color: '#4fc3ff', letterSpacing: '.5px' }}>AFTER</span>
-            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, color: 'rgba(200,225,255,.5)' }}>
-              [ screenshot: one calm tab, blocklist active ]
-            </span>
-          </div>
-        </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 26, maxWidth: 520, margin: '0 auto', textAlign: 'left' }}>
           {[
             { title: 'Pick your distractions', desc: 'Add the sites that always pull you off track.' },
@@ -290,33 +253,6 @@ export default function LandingPage() {
           The proof is in the focus time
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'auto auto', gap: 20 }}>
-          <div
-            style={{
-              gridColumn: '1/3',
-              background: 'linear-gradient(135deg, rgba(30,144,255,.18), rgba(0,194,255,.1))',
-              border: '1px solid rgba(79,195,255,.3)',
-              borderRadius: 16,
-              padding: 36,
-              textAlign: 'center',
-              boxShadow: '0 0 24px 2px rgba(30,144,255,.15)',
-            }}
-          >
-            <p
-              style={{
-                fontSize: 44,
-                fontWeight: 800,
-                margin: '0 0 6px',
-                background: 'linear-gradient(135deg,#fff,#a9dcff)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              14,236 hrs
-            </p>
-            <p style={{ fontSize: 14, color: 'rgba(200,225,255,.55)', margin: 0 }}>
-              of focus time logged by LockedIn users this week
-            </p>
-          </div>
           <div style={{ ...cardStyle, borderRadius: 16, padding: 28 }}>
             <p style={{ fontSize: 12, fontWeight: 700, color: '#4fc3ff', margin: '0 0 10px', letterSpacing: '.5px' }}>
               CATEGORY BLOCKING
