@@ -136,19 +136,22 @@ export default function LandingPage() {
         <div style={{ position: 'relative', maxWidth: 820, margin: '0 auto', padding: '0 24px' }}>
           <div
             style={{
+              position: 'relative',
               border: '1px solid rgba(79,195,255,.3)',
               borderRadius: 16,
               background: 'linear-gradient(180deg, rgba(30,144,255,.1), rgba(10,18,48,.4))',
               boxShadow: '0 0 40px 6px rgba(30,144,255,.15)',
               height: 320,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              overflow: 'hidden',
             }}
           >
-            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 13, color: 'rgba(200,225,255,.4)' }}>
-              [ product screenshot: focus-session dashboard with active blocklist + streak ]
-            </span>
+            <Image
+              src="/focus-session.png"
+              alt="LockedIn focus-session dashboard with an active blocklist and streak"
+              fill
+              sizes="(max-width: 820px) 100vw, 820px"
+              style={{ objectFit: 'cover' }}
+            />
           </div>
         </div>
       </section>
@@ -269,19 +272,22 @@ export default function LandingPage() {
           </div>
           <div
             style={{
+              position: 'relative',
               gridColumn: '1/3',
               border: '1px solid rgba(79,195,255,.25)',
               borderRadius: 16,
               height: 180,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              overflow: 'hidden',
               background: 'rgba(10,18,48,.4)',
             }}
           >
-            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, color: 'rgba(200,225,255,.4)' }}>
-              [ screenshot: stats dashboard with streaks + weekly focus chart ]
-            </span>
+            <Image
+              src="/stats-dashboard.png"
+              alt="LockedIn stats dashboard showing streaks and weekly focus time"
+              fill
+              sizes="(max-width: 960px) 100vw, 960px"
+              style={{ objectFit: 'cover', objectPosition: 'top' }}
+            />
           </div>
         </div>
       </section>
