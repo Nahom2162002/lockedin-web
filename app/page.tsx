@@ -144,7 +144,7 @@ export default function LandingPage() {
                 textDecoration: 'none',
               }}
             >
-              Add to Chrome — free
+              Add to Chrome
             </a>
             <a
               href="#how"
