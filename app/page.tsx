@@ -85,6 +85,7 @@ export default function LandingPage() {
           .hero-section { padding: 64px 20px 0 !important; }
           .heading-lg { font-size: 28px !important; }
           .heading-md { font-size: 26px !important; }
+          .hero-shot-wrap { padding: 0 20px !important; }
           .hero-shot { height: 220px !important; }
           .proof-grid { grid-template-columns: 1fr !important; }
           .proof-wide { grid-column: 1 / -1 !important; height: 160px !important; }
@@ -95,6 +96,11 @@ export default function LandingPage() {
         @media (max-width: 560px) {
           .audiences-grid { grid-template-columns: 1fr !important; }
           .site-footer { flex-direction: column !important; text-align: center !important; padding: 28px 20px !important; }
+          .hero-shot { height: 180px !important; }
+        }
+
+        @media (max-width: 400px) {
+          .hero-shot { height: 150px !important; }
         }
 
         @media (max-width: 340px) {
@@ -158,7 +164,7 @@ export default function LandingPage() {
             </a>
           </div>
         </div>
-        <div style={{ position: 'relative', maxWidth: 820, margin: '0 auto', padding: '0 24px' }}>
+        <div className="hero-shot-wrap" style={{ position: 'relative', maxWidth: 820, margin: '0 auto', padding: '0 24px' }}>
           <div
             className="hero-shot"
             style={{
