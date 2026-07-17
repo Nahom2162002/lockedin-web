@@ -75,12 +75,37 @@ export default function LandingPage() {
         .plan-card:hover { transform: translateY(-3px); }
         .footer-link { transition: color 0.15s ease; }
         .footer-link:hover { color: #8adfff !important; }
+
+        @media (max-width: 900px) {
+          .audiences-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+
+        @media (max-width: 768px) {
+          .section-pad { padding-left: 20px !important; padding-right: 20px !important; padding-top: 72px !important; }
+          .hero-section { padding: 64px 20px 0 !important; }
+          .heading-lg { font-size: 28px !important; }
+          .heading-md { font-size: 26px !important; }
+          .hero-shot { height: 220px !important; }
+          .proof-grid { grid-template-columns: 1fr !important; }
+          .proof-wide { grid-column: 1 / -1 !important; height: 160px !important; }
+          .pricing-grid { grid-template-columns: 1fr !important; }
+          .cta-final { padding: 72px 20px 72px !important; }
+        }
+
+        @media (max-width: 560px) {
+          .audiences-grid { grid-template-columns: 1fr !important; }
+          .site-footer { flex-direction: column !important; text-align: center !important; padding: 28px 20px !important; }
+        }
+
+        @media (max-width: 340px) {
+          .features-grid { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       <SiteNav showLinks />
 
       {/* Hero */}
-      <section style={{ position: 'relative', padding: '88px 24px 0', textAlign: 'center', overflow: 'hidden' }}>
+      <section className="hero-section" style={{ position: 'relative', padding: '88px 24px 0', textAlign: 'center', overflow: 'hidden' }}>
         <Image
           src="/futuristic-bg.png"
           alt=""
@@ -135,6 +160,7 @@ export default function LandingPage() {
         </div>
         <div style={{ position: 'relative', maxWidth: 820, margin: '0 auto', padding: '0 24px' }}>
           <div
+            className="hero-shot"
             style={{
               position: 'relative',
               border: '1px solid rgba(79,195,255,.3)',
@@ -157,8 +183,8 @@ export default function LandingPage() {
       </section>
 
       {/* Pain-point narrative */}
-      <section id="how" style={{ maxWidth: 940, margin: '0 auto', padding: '120px 24px 20px', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.25, margin: '0 0 16px' }}>
+      <section id="how" className="section-pad" style={{ maxWidth: 940, margin: '0 auto', padding: '120px 24px 20px', textAlign: 'center' }}>
+        <h2 className="heading-lg" style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.25, margin: '0 0 16px' }}>
           &ldquo;3 hours on YouTube.
           <br />0 pages of your essay.&rdquo;
         </h2>
@@ -198,14 +224,14 @@ export default function LandingPage() {
       </section>
 
       {/* Persona feature cards */}
-      <section id="audiences" style={{ maxWidth: 1000, margin: '0 auto', padding: '120px 24px 0' }}>
-        <h2 style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>
+      <section id="audiences" className="section-pad" style={{ maxWidth: 1000, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 className="heading-md" style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>
           Built for every kind of focus
         </h2>
         <p style={{ textAlign: 'center', color: 'rgba(200,225,255,.55)', fontSize: 15, margin: '0 0 48px' }}>
           Same tool, different reasons to lock in.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
+        <div className="audiences-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
           {AUDIENCES.map((a) => (
             <div key={a.label} style={{ ...cardStyle, padding: 26 }}>
               <p style={{ fontSize: 12, fontWeight: 700, color: '#4fc3ff', margin: '0 0 8px', letterSpacing: '.5px' }}>
@@ -218,14 +244,14 @@ export default function LandingPage() {
       </section>
 
       {/* Full feature list */}
-      <section id="features" style={{ maxWidth: 1000, margin: '0 auto', padding: '120px 24px 0' }}>
-        <h2 style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>
+      <section id="features" className="section-pad" style={{ maxWidth: 1000, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 className="heading-md" style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>
           Everything you need to stay focused
         </h2>
         <p style={{ textAlign: 'center', color: 'rgba(200,225,255,.55)', fontSize: 15, margin: '0 0 48px' }}>
           Free to start. Upgrade when you&apos;re ready for the full toolkit.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+        <div className="features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
           {FEATURES.map((f) => (
             <div key={f.title} className="feature-card" style={{ ...cardStyle, borderRadius: 16, padding: '28px 24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -251,11 +277,11 @@ export default function LandingPage() {
       </section>
 
       {/* Proof bento grid */}
-      <section style={{ maxWidth: 960, margin: '0 auto', padding: '120px 24px 0' }}>
-        <h2 style={{ textAlign: 'center', fontSize: 32, fontWeight: 700, margin: '0 0 44px' }}>
+      <section className="section-pad" style={{ maxWidth: 960, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 className="heading-md" style={{ textAlign: 'center', fontSize: 32, fontWeight: 700, margin: '0 0 44px' }}>
           The proof is in the focus time
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'auto auto', gap: 20 }}>
+        <div className="proof-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'auto auto', gap: 20 }}>
           <div style={{ ...cardStyle, borderRadius: 16, padding: 28 }}>
             <p style={{ fontSize: 12, fontWeight: 700, color: '#4fc3ff', margin: '0 0 10px', letterSpacing: '.5px' }}>
               CATEGORY BLOCKING
@@ -271,6 +297,7 @@ export default function LandingPage() {
             <p style={{ fontSize: 12, color: 'rgba(200,225,255,.45)', margin: 0 }}>— Priya M., freelance designer</p>
           </div>
           <div
+            className="proof-wide"
             style={{
               position: 'relative',
               gridColumn: '1/3',
@@ -293,12 +320,12 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px 0' }}>
-        <h2 style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>Simple pricing</h2>
+      <section id="pricing" className="section-pad" style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px 0' }}>
+        <h2 className="heading-md" style={{ textAlign: 'center', fontSize: 34, fontWeight: 700, margin: '0 0 16px' }}>Simple pricing</h2>
         <p style={{ textAlign: 'center', color: 'rgba(200,225,255,.55)', fontSize: 15, margin: '0 0 48px' }}>
           Start free. Upgrade when you need more.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div className="pricing-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           <div className="plan-card" style={{ ...cardStyle, borderRadius: 16, padding: '32px 28px' }}>
             <h3 style={{ fontSize: 19, fontWeight: 700, margin: '0 0 8px' }}>Free</h3>
             <p style={{ fontSize: 34, fontWeight: 800, margin: '0 0 4px' }}>$0</p>
@@ -400,8 +427,8 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA */}
-      <section style={{ maxWidth: 600, margin: '0 auto', padding: '120px 24px 100px', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 34, fontWeight: 800, margin: '0 0 16px' }}>Ready to take back your focus?</h2>
+      <section className="cta-final" style={{ maxWidth: 600, margin: '0 auto', padding: '120px 24px 100px', textAlign: 'center' }}>
+        <h2 className="heading-md" style={{ fontSize: 34, fontWeight: 800, margin: '0 0 16px' }}>Ready to take back your focus?</h2>
         <p style={{ color: 'rgba(200,225,255,.55)', fontSize: 16, margin: '0 0 36px', lineHeight: 1.7 }}>
           Join thousands of students and professionals who use LockedIn to stay on track every day.
         </p>
@@ -427,6 +454,7 @@ export default function LandingPage() {
       </section>
 
       <footer
+        className="site-footer"
         style={{
           borderTop: '1px solid rgba(79,195,255,.15)',
           padding: '32px 48px',

@@ -32,7 +32,19 @@ export default function PersonaHero() {
 
   return (
     <>
+      <style>{`
+        @media (max-width: 640px) {
+          .persona-toggle { gap: 4px !important; padding: 4px !important; margin-bottom: 22px !important; }
+          .persona-toggle button { font-size: 12px !important; padding: 6px 12px !important; }
+          .persona-heading { font-size: 34px !important; margin: 0 0 16px !important; }
+          .persona-sub { font-size: 15px !important; margin: 0 0 28px !important; }
+        }
+        @media (max-width: 400px) {
+          .persona-heading { font-size: 28px !important; }
+        }
+      `}</style>
       <div
+        className="persona-toggle"
         style={{
           display: 'inline-flex',
           gap: 6,
@@ -68,6 +80,7 @@ export default function PersonaHero() {
         })}
       </div>
       <h1
+        className="persona-heading"
         style={{
           fontSize: 54,
           fontWeight: 800,
@@ -82,6 +95,7 @@ export default function PersonaHero() {
         {persona.headline}
       </h1>
       <p
+        className="persona-sub"
         style={{
           fontSize: 18,
           color: 'rgba(200,225,255,.65)',
