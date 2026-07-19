@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/mongodb';
 import { getUserFromRequest } from '@/lib/auth';
 import Website from '@/models/Website';
 import BlockEvent from '@/models/BlockEvent';
+import FocusEvent from '@/models/FocusEvent';
 import User from '@/models/User';
 
 const corsHeaders = {
@@ -119,15 +120,33 @@ export async function GET(req: NextRequest) {
         const userWithGoals = await User.findById(user._id, 'goals');
         const goals = userWithGoals?.goals || { dailyMinutes: 0, weeklyMinutes: 0 };
 
-        // Weekly focus minutes for goal tracking
-        const weeklyFocusMinutes = Math.round(totalFocusMinutes);
+        // Daily/weekly goal progress is tracked from actual completed Focus Session time
+        // (FocusEvent), not scheduled website-block windows — those are a different metric
+        // (see totalFocusMinutes above). "Today" is the caller's local calendar day, passed
+        // in as ?date=YYYY-MM-DD, since the server has no way to know the user's timezone.
+        const dateParam = req.nextUrl.searchParams.get('date');
+        const todayStr = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)
+            ? dateParam
+            : new Date().toISOString().split('T')[0];
 
-        // Today's focus minutes
-        const todayStr = new Date().toISOString().split('T')[0];
+        const last7DateStrs = Array.from({ length: 7 }, (_, i) => {
+            const d = new Date(`${todayStr}T00:00:00Z`);
+            d.setUTCDate(d.getUTCDate() - (6 - i));
+            return d.toISOString().split('T')[0];
+        });
+
+        const focusEvents = await FocusEvent.find({
+            userId: user._id,
+            date: { $in: last7DateStrs }
+        });
+
         const todayMinutes = Math.round(
-            websites
-                .filter(site => site.dateCreated.toISOString().split('T')[0] === todayStr)
-                .reduce((total, site) => total + getSiteMinutes(site), 0)
+            focusEvents
+                .filter(e => e.date === todayStr)
+                .reduce((total, e) => total + e.minutes, 0)
+        );
+        const weeklyFocusMinutes = Math.round(
+            focusEvents.reduce((total, e) => total + e.minutes, 0)
         );
 
         return NextResponse.json({
