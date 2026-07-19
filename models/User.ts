@@ -13,7 +13,8 @@ const userSchema = new Schema({
   cancelAtPeriodEnd: { type: Boolean, default: false },
   strictMode: { type: Boolean, default: false },
   trialEnd: { type: Date, default: null },
-  hasHadTrial: { type: Boolean, default: false }
+  hasHadTrial: { type: Boolean, default: false },
+  uninstallPassword: { type: String, default: null }
 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
