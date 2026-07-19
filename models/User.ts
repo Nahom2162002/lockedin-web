@@ -15,6 +15,8 @@ const userSchema = new Schema({
   trialEnd: { type: Date, default: null },
   hasHadTrial: { type: Boolean, default: false },
   uninstallPassword: { type: String, default: null },
+  uninstallPasswordAttempts: { type: Number, default: 0 },
+  uninstallPasswordLockedUntil: { type: Date, default: null },
   goals: {
     dailyMinutes:  { type: Number, default: 0 },
     weeklyMinutes: { type: Number, default: 0 }

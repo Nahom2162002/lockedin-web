@@ -18,7 +18,12 @@ export async function GET(req: NextRequest) {
         const user = await getUserFromRequest(req);
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
 
-        return NextResponse.json({ username: user.username, plan: user.plan, hasHadTrial: user.hasHadTrial ?? false }, { headers: corsHeaders });
+        return NextResponse.json({
+            username: user.username,
+            plan: user.plan,
+            hasHadTrial: user.hasHadTrial ?? false,
+            uninstallPasswordSet: !!user.uninstallPassword
+        }, { headers: corsHeaders });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
     }
