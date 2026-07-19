@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/mongodb';
 import { getUserFromRequest } from '@/lib/auth';
 import Website from '@/models/Website';
 import BlockEvent from '@/models/BlockEvent';
+import User from '@/models/User';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -114,6 +115,21 @@ export async function GET(req: NextRequest) {
             blockedAt: { $gte: todayStart }
         });
 
+        // Fetch goals
+        const userWithGoals = await User.findById(user._id, 'goals');
+        const goals = userWithGoals?.goals || { dailyMinutes: 0, weeklyMinutes: 0 };
+
+        // Weekly focus minutes for goal tracking
+        const weeklyFocusMinutes = Math.round(totalFocusMinutes);
+
+        // Today's focus minutes
+        const todayStr = new Date().toISOString().split('T')[0];
+        const todayMinutes = Math.round(
+            websites
+                .filter(site => site.dateCreated.toISOString().split('T')[0] === todayStr)
+                .reduce((total, site) => total + getSiteMinutes(site), 0)
+        );
+
         return NextResponse.json({
             totalFocusMinutes,
             topSites,
@@ -122,7 +138,10 @@ export async function GET(req: NextRequest) {
             last7Days,
             avgDailyMinutes,
             bestDayMinutes,
-            blockEventsToday
+            blockEventsToday,
+            goals,
+            todayMinutes,
+            weeklyFocusMinutes 
         }, { headers: corsHeaders });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });

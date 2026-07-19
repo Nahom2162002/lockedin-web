@@ -14,7 +14,11 @@ const userSchema = new Schema({
   strictMode: { type: Boolean, default: false },
   trialEnd: { type: Date, default: null },
   hasHadTrial: { type: Boolean, default: false },
-  uninstallPassword: { type: String, default: null }
+  uninstallPassword: { type: String, default: null },
+  goals: {
+    dailyMinutes:  { type: Number, default: 0 },
+    weeklyMinutes: { type: Number, default: 0 }
+  }
 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);

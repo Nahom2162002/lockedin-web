@@ -11,6 +11,9 @@ interface Stats {
   avgDailyMinutes: number;
   bestDayMinutes: number;
   blockEventsToday: number;
+  goals: { dailyMinutes: number; weeklyMinutes: number };
+  todayMinutes: number;
+  weeklyFocusMinutes: number;
 }
 
 const formatMinutes = (mins: number) => {
@@ -154,6 +157,69 @@ export default function DashboardPage() {
             <div style={styles.blockedTodayWrap}>
               <StatCard label="Blocked Today" value={stats.blockEventsToday} sub="attempts" />
             </div>
+
+            {(stats.goals.dailyMinutes > 0 || stats.goals.weeklyMinutes > 0) && (
+              <div style={{ ...styles.chartCard, marginBottom: 22 }}>
+                <h3 style={styles.chartTitle}>🎯 Goal Progress</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {stats.goals.dailyMinutes > 0 && (
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                        <span style={{ color: 'oklch(0.95 0.005 260)', fontSize: 13 }}>Daily Goal</span>
+                        <span style={{ color: 'oklch(0.65 0.02 260)', fontSize: 12 }}>
+                          {formatMinutes(stats.todayMinutes)} / {formatMinutes(stats.goals.dailyMinutes)}
+                        </span>
+                      </div>
+                      <div style={{ height: 8, background: 'oklch(1 0 0 / 0.08)', borderRadius: 4 }}>
+                        <div
+                          style={{
+                            height: '100%',
+                            width: `${Math.min((stats.todayMinutes / stats.goals.dailyMinutes) * 100, 100)}%`,
+                            background:
+                              stats.todayMinutes >= stats.goals.dailyMinutes
+                                ? '#4CAF50'
+                                : 'linear-gradient(135deg, oklch(0.64 0.17 265), oklch(0.55 0.16 265))',
+                            borderRadius: 4,
+                            transition: 'width 0.3s ease',
+                          }}
+                        />
+                      </div>
+                      {stats.todayMinutes >= stats.goals.dailyMinutes && (
+                        <p style={{ color: '#4CAF50', fontSize: 12, margin: '4px 0 0' }}>✓ Daily goal reached!</p>
+                      )}
+                    </div>
+                  )}
+
+                  {stats.goals.weeklyMinutes > 0 && (
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                        <span style={{ color: 'oklch(0.95 0.005 260)', fontSize: 13 }}>Weekly Goal</span>
+                        <span style={{ color: 'oklch(0.65 0.02 260)', fontSize: 12 }}>
+                          {formatMinutes(stats.weeklyFocusMinutes)} / {formatMinutes(stats.goals.weeklyMinutes)}
+                        </span>
+                      </div>
+                      <div style={{ height: 8, background: 'oklch(1 0 0 / 0.08)', borderRadius: 4 }}>
+                        <div
+                          style={{
+                            height: '100%',
+                            width: `${Math.min((stats.weeklyFocusMinutes / stats.goals.weeklyMinutes) * 100, 100)}%`,
+                            background:
+                              stats.weeklyFocusMinutes >= stats.goals.weeklyMinutes
+                                ? '#4CAF50'
+                                : 'linear-gradient(135deg, oklch(0.64 0.17 265), oklch(0.55 0.16 265))',
+                            borderRadius: 4,
+                            transition: 'width 0.3s ease',
+                          }}
+                        />
+                      </div>
+                      {stats.weeklyFocusMinutes >= stats.goals.weeklyMinutes && (
+                        <p style={{ color: '#4CAF50', fontSize: 12, margin: '4px 0 0' }}>✓ Weekly goal reached!</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {!hasData ? (
               <div style={styles.emptyState}>
