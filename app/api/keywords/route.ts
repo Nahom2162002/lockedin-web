@@ -34,10 +34,16 @@ export async function POST(req: NextRequest) {
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
         if (user.plan !== 'pro') return NextResponse.json({ error: 'Pro plan required' }, { status: 403, headers: corsHeaders });
 
-        const { keyword } = await req.json();
+        const { keyword, startTime, endTime, days, strictMode } = await req.json();
 
         if (!keyword || keyword.trim().length === 0) {
             return NextResponse.json({ error: 'Keyword is required' }, { status: 400, headers: corsHeaders });
+        }
+        if (!startTime || !endTime || !days || days.length === 0) {
+            return NextResponse.json({ error: 'Please fill in all fields and select at least one day' }, { status: 400, headers: corsHeaders });
+        }
+        if (endTime <= startTime) {
+            return NextResponse.json({ error: 'End time must be after start time' }, { status: 400, headers: corsHeaders });
         }
 
         // Check for duplicate
@@ -51,7 +57,11 @@ export async function POST(req: NextRequest) {
 
         const block = new KeywordBlock({
             userId: user._id,
-            keyword: keyword.trim().toLowerCase()
+            keyword: keyword.trim().toLowerCase(),
+            startTime,
+            endTime,
+            days,
+            strictMode: strictMode ?? null
         });
         await block.save();
 
