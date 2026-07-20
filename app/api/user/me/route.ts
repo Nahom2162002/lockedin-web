@@ -21,8 +21,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({
             username: user.username,
             plan: user.plan,
-            hasHadTrial: user.hasHadTrial ?? false,
-            uninstallPasswordSet: !!user.uninstallPassword
+            hasHadTrial: user.hasHadTrial ?? false
         }, { headers: corsHeaders });
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500, headers: corsHeaders });
