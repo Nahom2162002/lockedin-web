@@ -23,6 +23,21 @@ const FEATURES = [
     desc: 'Block entire categories like Social Media, Gaming, or News in one click.',
   },
   {
+    title: 'Keyword Blocking',
+    tier: 'PRO' as const,
+    desc: 'Block any URL containing a keyword — no need to list every site by name.',
+  },
+  {
+    title: 'Focus Sessions',
+    tier: 'PRO' as const,
+    desc: 'Pomodoro-style work/break timers that automatically pause your blocks on break.',
+  },
+  {
+    title: 'Focus Goals',
+    tier: 'PRO' as const,
+    desc: 'Set daily and weekly focus targets and track your progress toward them.',
+  },
+  {
     title: 'Stats Dashboard',
     tier: 'PRO' as const,
     desc: 'Track your focus time, streaks, and which sites tried to steal your attention.',
@@ -399,7 +414,7 @@ export default function LandingPage() {
             <p style={{ color: 'rgba(200,225,255,.4)', fontSize: 13, margin: '0 0 24px' }}>
               14-day free trial · cancel anytime
             </p>
-            {['Everything in Free', 'Recurring schedules & category blocking', 'Stats dashboard, strict mode, sync'].map(
+            {['Everything in Free', 'Recurring, category & keyword blocking', 'Focus sessions & goals', 'Stats dashboard, strict mode, sync'].map(
               (f, i, arr) => (
                 <p
                   key={f}
